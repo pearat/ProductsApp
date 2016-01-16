@@ -2,111 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Your ASP.NET application</title>
-    <style>
-        body {
-            background: #fff;
-            color: #505050;
-            font: 14px 'Segoe UI', tahoma, arial, helvetica, sans-serif;
-            margin: 20px;
-            padding: 0;
-        }
-
-        #header {
-            background: #efefef;
-            padding: 0;
-        }
-
-        h1 {
-            font-size: 48px;
-            font-weight: normal;
-            margin: 0;
-            padding: 0 30px;
-            line-height: 150px;
-        }
-
-        p {
-            font-size: 20px;
-            color: #fff;
-            background: #969696;
-            padding: 0 30px;
-            line-height: 50px;
-        }
-
-        #main {
-            padding: 5px 30px;
-        }
-
-        .section {
-            width: 21.7%;
-            float: left;
-            margin: 0 0 0 4%;
-        }
-
-            .section h2 {
-                font-size: 13px;
-                text-transform: uppercase;
-                margin: 0;
-                border-bottom: 1px solid silver;
-                padding-bottom: 12px;
-                margin-bottom: 8px;
-            }
-
-            .section.first {
-                margin-left: 0;
-            }
-
-                .section.first h2 {
-                    font-size: 24px;
-                    text-transform: none;
-                    margin-bottom: 25px;
-                    border: none;
-                }
-
-                .section.first li {
-                    border-top: 1px solid silver;
-                    padding: 8px 0;
-                }
-
-            .section.last {
-                margin-right: 0;
-            }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            line-height: 20px;
-        }
-
-        li {
-            padding: 4px 0;
-        }
-
-        a {
-            color: #267cb2;
-            text-decoration: none;
-        }
-
-            a:hover {
-                text-decoration: underline;
-            }
-    </style>
+    <title>ASP.NET app</title>
+    <link href="css/carFinder.css" rel="stylesheet" />
 </head>
-<body>
+<body>  
 
-        <p>
-            <label for="amount">Model Year:</label>
-            <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-        </p>
+    <p>
+        <label for="year">Model Year:</label>
+        <input type="text" id="year" readonly style="border:0; color:#f6931f; font-weight:bold;">
+    </p>
 
-        <div id="slider-vertical" style="height:200px;"></div>
+    <div id="yearSlider" style="height:20px;"></div>
+
+    <p>
+        <label for="make">Make:</label>
+        <input type="text" id="make" readonly style="border:0; color:#f6931f; font-weight:bold;">
+    </p>
+    <div id="makeSlider" style="height:20px;"></div>
+
+    <p>
+        <label for="model">Model:</label>
+        <input type="text" id="model" readonly style="border:0; color:#f6931f; font-weight:bold;">
+    </p>
+
+        <div id="modelSlider" style="height:20px;"></div>
+
+        <h2 id="someElement">starter text</h2>
+        <h3 id="anotherElement">another paragraph</h3>
 
 
-        <div id="header">
-            <h1>Your ASP.NET application</h1>
-            <p>Congratulations! You've created a project</p>
-        </div>
+        <h2>Car Makes for Year</h2>
+        <p id="models"></p>
+
         <form>
             <select>
                 <option value="" disabled="disabled" selected="selected">Please select name</option>
@@ -116,13 +43,15 @@
                 <option value="Harry">Harry</option>
             </select>
         </form>
-    
+
+
+
         <h2>NHTSA Data</h2>
         <div id="data"></div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-        
+
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
         <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
