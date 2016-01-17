@@ -3,58 +3,53 @@
 <head>
     <meta charset="utf-8" />
     <title>ASP.NET app</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link href="css/carFinder.css" rel="stylesheet" />
 </head>
-<body>  
 
-    <p>
-        <label for="year">Model Year:</label>
-        <input type="text" id="year" readonly style="border:0; color:#f6931f; font-weight:bold;">
+<body class="ui-widget-content" style="border:0;">
+
+    <p class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px;">
+        <span class="ui-icon ui-icon-pencil" style="float:left; margin:-2px 5px 0 0;"></span>
+        Simple Colorpicker
     </p>
 
-    <div id="yearSlider" style="height:20px;"></div>
+    <div id="red"></div>
+    <div id="green"></div>
+    <div id="blue"></div>
 
-    <p>
-        <label for="make">Make:</label>
-        <input type="text" id="make" readonly style="border:0; color:#f6931f; font-weight:bold;">
-    </p>
-    <div id="makeSlider" style="height:20px;"></div>
+    <div id="swatch" class="ui-widget-content ui-corner-all"></div>
 
-    <p>
-        <label for="model">Model:</label>
-        <input type="text" id="model" readonly style="border:0; color:#f6931f; font-weight:bold;">
-    </p>
+        <p>
+            <label for="year">Year:</label>
+            <input type="text" id="year" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+        <div id="slideYears" style="height:20px;"></div>
 
-        <div id="modelSlider" style="height:20px;"></div>
+        <p>
+            <label for="make">Make:</label>
+            <input type="text" id="make" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+        <div id="slideMakes" style="height:20px;"></div>
 
-        <h2 id="someElement">starter text</h2>
-        <h3 id="anotherElement">another paragraph</h3>
+        <p>
+            <label for="model">Model:</label>
+            <input type="text" id="model" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+        <div id="slideModels" style="height:20px;"></div>
 
-
-        <h2>Car Makes for Year</h2>
-        <p id="models"></p>
-
-        <form>
-            <select>
-                <option value="" disabled="disabled" selected="selected">Please select name</option>
-                <option value="Tom">Tom</option>
-                <option value="Marry">Marry</option>
-                <option value="Jane">Jane</option>
-                <option value="Harry">Harry</option>
-            </select>
-        </form>
-
-
+        <p>
+            <label for="trim">Trim:</label>
+            <input type="text" id="trim" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+        <div id="slideTrims" style="height:20px;"></div>
 
         <h2>NHTSA Data</h2>
         <div id="data"></div>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-
-        <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
-        <script src="./Scripts/CarFinder.js"></script>
     </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="./Scripts/CarFinder.js"></script>
+
 </html>

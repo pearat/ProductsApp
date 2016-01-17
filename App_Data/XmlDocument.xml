@@ -481,17 +481,7 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:ProductsApp.Controllers.CarsController.GetCars4YrMakeModelTrim(System.String,System.String,System.String,System.String,System.String)">
-            <summary>
-            This API returns a list of cars records for 
-            </summary>
-            <param name="year"></param>
-            <param name="make"></param>
-            <param name="model"></param>
-            <param name="trim"></param>
-            <param name="sort"></param>
-            <returns></returns>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:ProductsApp.Controllers.CarsController.GetCars4YrMakeModelTrim(System.String,System.String,System.String,System.String,System.String)" -->
         <member name="M:ProductsApp.Controllers.CarsController.GetCarMakes4Yr(System.String)">
             <summary>
             This API returns a list of the distinct car makes for the year in question
