@@ -9,44 +9,72 @@
 
 <body class="ui-widget-content" style="border:0;">
 
-    <p class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px;">
-        <span class="ui-icon ui-icon-pencil" style="float:left; margin:-2px 5px 0 0;"></span>
-        Simple Colorpicker
-    </p>
-
-    <div id="red"></div>
-    <div id="green"></div>
-    <div id="blue"></div>
-
-    <div id="swatch" class="ui-widget-content ui-corner-all"></div>
-
+    
         <p>
             <label for="year">Year:</label>
             <input type="text" id="year" readonly style="border:0; color:#f6931f; font-weight:bold;">
         </p>
-        <div id="slideYears" style="height:20px;"></div>
+        <div id="slideYears" style="height:10px; width:60%"></div>
 
         <p>
             <label for="make">Make:</label>
             <input type="text" id="make" readonly style="border:0; color:#f6931f; font-weight:bold;">
         </p>
-        <div id="slideMakes" style="height:20px;"></div>
+        <div id="slideMakes" style="height:10px; width:60%"></div>
 
-        <p>
+        <!--<p>
             <label for="model">Model:</label>
             <input type="text" id="model" readonly style="border:0; color:#f6931f; font-weight:bold;">
         </p>
-        <div id="slideModels" style="height:20px;"></div>
+        <div id="slideModels" style="height:10px;"></div>-->
 
-        <p>
+    <p><br /></p>
+        <div id="dropdownModels">
+            <label for="model">Model:</label>
+            <select id="model">
+                 <option>loading</option>
+            </select>
+        </div>
+        
+        <p id="modelChoice">Loading</p>
+
+        <div id="dropdownTrims">
+            <label for="trim">Trim:</label>
+            <select id="trim">
+                <option>loading</option>
+            </select>
+        </div>
+    
+    <p id="trimChoice">Loading</p>
+
+    <!--<select id="details"></select>-->
+
+
+
+        <!--<p>
             <label for="trim">Trim:</label>
             <input type="text" id="trim" readonly style="border:0; color:#f6931f; font-weight:bold;">
         </p>
-        <div id="slideTrims" style="height:20px;"></div>
+        <div id="slideTrims" style="height:20px;"></div>-->
 
         <h2>NHTSA Data</h2>
         <div id="data"></div>
-    </body>
+
+
+        <section id="colorSlider">
+            <p class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px;">
+                <span class="ui-icon ui-icon-pencil" style="float:left; margin:-2px 5px 0 0;"></span>
+                Simple Colorpicker
+            </p>
+
+            <div id="red"></div>
+            <div id="green"></div>
+            <div id="blue"></div>
+
+            <div id="swatch" class="ui-widget-content ui-corner-all"></div>
+        </section>
+
+</body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>

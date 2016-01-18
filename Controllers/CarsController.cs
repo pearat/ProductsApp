@@ -60,5 +60,58 @@ namespace ProductsApp.Controllers
 
         }
 
+
+
+        //public async Task<IHttpActionResult> getCar(int Id)
+        //{
+        //    HttpResponseMessage response;
+        //    string content = "";
+        //    var Car = db.Cars.Find(Id);
+        //    var Recalls = "";
+        //    var Image = "";
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri("http://www.nhtsa.gov/");
+        //        try
+        //        {
+        //            response = await client.GetAsync("webapi/api/Recalls/vehicle/modelyear/" + Car.Model_year +
+        //                                                                            "/make/" + Car.Make +
+        //                                                                            "/model/" + Car.Model_name + "?format=json");
+        //            content = await response.Content.ReadAsStringAsync();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            return InternalServerError(e);
+        //        }
+        //    }
+        //    Recalls = content;
+
+        //    var image = new BingSearchContainer(new Uri("https://api.datamarket.azure.com/Bing/search/"));
+
+        //    image.Credentials = new NetworkCredential("accountKey", "5u/0CzVmYrTKDOjlxPePfPkh/G8llMIfVJ7QC/oNEvQ");   //"dwmFt1J2rM45AQXkGTk4ebfcVLNcytTxGMHK6dgMreg"
+        //    var marketData = image.Composite(
+        //        "image",
+        //        Car.Model_year + " " + Car.Make + " " + Car.Model_name + " " + Car.Model_trim,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        null
+        //        ).Execute();
+
+        //    Image = marketData.First().Image.First().MediaUrl;
+        //    return Ok(new { car = Car, recalls = Recalls, image = Image });
+
+        //}
+
+
     }
 }

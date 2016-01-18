@@ -2,65 +2,48 @@
 
     initializeErrors();
 
-    slideYears(1936, 2015, 1988);  // replace w/ API call for min & max
+    slideYears(1936, 2015, 2000);  // replace w/ API call for min & max
 
-    $('#slideYears').on('mouseleave', function () {
+    $('#slideYears').on('slidechange', function () {
         getMakes($('#year').val());
     });
     
-    $('#slideMakes').on('mouseleave', function () {
+    $('#slideMakes').on('slidechange', function () {
+        $('#model option:not(:first)').remove();
         getModels($('#year').val(),$('#make').val());
     });
 
-    $('#slideModels').on('mouseleave', function () {
-        getTrims($('#year').val(), $('#make').val(), $('#model').val());
+    // var carsArray = [];
+    var data;
+   /*
+    $('#dropdownModels').on('change', function () {
+        //$('#modelChoice').val($('#model'));
+        //$('#trim option:not(:first)').remove();
+        // getTrims($('#year').val(), $('#make').val(), $('#modelChoice').val(), carsArray);
+
+        var i = carsArray.length;
+        console.log('In main LOOP carsArray length: ' + carsArray.length + ' i = ' + i);
+        for (j = 0; j < i; j++) {
+            console.log(' In main LOOP ['+j+'] ' + ': id ' + carsArray[j].id + '\n' 
+            + ': make ' + carsArray[j].make_display + ': model ' + carsArray[j].model_name
+            + ': year ' + carsArray[j].model_year + ': trim ' + carsArray[j].model_trim
+            + ': engine_cc ' + carsArray[j].engine_cc + ': wheelbase ' + carsArray[j].wheelbase
+            );
+        }
     });
 
-    function hexFromRGB(r, g, b) {
-        var hex = [
-          r.toString(16),
-          g.toString(16),
-          b.toString(16)
-        ];
-        $.each(hex, function (nr, val) {
-            if (val.length === 1) {
-                hex[nr] = "0" + val;
-            }
-        });
-        return hex.join("").toUpperCase();
-    }
-    function refreshSwatch() {
-        var red = $("#red").slider("value"),
-          green = $("#green").slider("value"),
-          blue = $("#blue").slider("value"),
-          hex = hexFromRGB(red, green, blue);
-        $("#swatch").css("background-color", "#" + hex);
-    }
-    $(function () {
-        $("#red, #green, #blue").slider({
-            orientation: "horizontal",
-            range: "min",
-            max: 255,
-            value: 127,
-            slide: refreshSwatch,
-            change: refreshSwatch
-        });
-        $("#red").slider("value", 255);
-        $("#green").slider("value", 140);
-        $("#blue").slider("value", 60);
-    });
+    
+    $('#trim').on('mouseleave', function () {
 
+    });
+    */
 });
-
-
-
-
 
 
 function getTrims(year, make, model) {
 
     var _year = year || '';
-    var _make = make || '';
+    var _make = make.toLowerCase() || '';
     var _model = model || '';
     var http = 'http://localhost:57795/api/cars/full?year=' + _year +
         '&make=' + _make +
@@ -68,7 +51,7 @@ function getTrims(year, make, model) {
 
     console.log('GET TRIMS search string>>>' + http + '<<<');
     var trimsArray = [];
-
+    var carsArray = new Array;
     $.ajax({
         url: http,
         dataType: 'xml',
@@ -76,99 +59,157 @@ function getTrims(year, make, model) {
             console.debug(xhr); console.debug(error);
             trimsArray = NULL;
         },
-
         type: 'GET',
         success: function (data) {
-            var div = $('#trims');
-            console.log('gettrims data in success:' + data + '\n typeof' + typeof data + 'length ' + data.length);
-            var i = 0;
-            $(data).find('model_trim').each(function () {
-                trimsArray[i] = $(this).text();
-                console.log('inside GET TRIMS trimsArray >> ' + trimsArray[i]);
-                i++;
+            var select = $('#trim');
+            var optionsHtml = new Array();
+            $('#trim option:not(:first)').remove();
+            $('model_trim', data).each(function () {
+                var value = $(this).attr('value');
+                var label = $(this).text();
+                optionsHtml.push("<option class='ddindent' value='" +
+                    value + "'>" + label + "</option>");
             });
-            slideTrims(data);
+            optionsHtml = optionsHtml.join('');
+            select.append(optionsHtml);
+            select.children(":first").text("Select Trim").attr("selected", true);
+  
+            $('#dropdownTrims').change( function () {
+                var choice = $('#dropdownTrims :selected').text();
+                $('#trimChoice').val(choice);
+                $('#trimChoice').text(choice);
+            });
+  
+            
+            $('#trim').on('change', function () {
 
+                var i = 0;
+                $('Car', data).each(function () {
+                    var car = new Object;
+                    car = {
+                        body_style: $('body_style', this).text(),
+                        co2: $('co2', this).text(), 
+                        drive_type: $('drive_type',this).text(),
+                        engine_bore_mm: $('engine_bore_mm', this).text(),
+                        engine_cc: $('engine_cc', this).text(),
+                        engine_compression: $('engine_compression', this).text(),
+                        engine_fuel: $('engine_fuel', this).text(),
+                        engine_num_cyl: $('engine_num_cyl', this).text(),
+                        engine_position: $('engine_position', this).text(),
+                        engine_power_ps: $('engine_power_ps', this).text(),
+                        engine_power_rpm: $('engine_power_rpm', this).text(),
+                        engine_stroke_nm: $('engine_stroke_nm', this).text(),
+                        engine_torque_nm: $('engine_torque_nm', this).text(),
+                        engine_torque_rpm: $('engine_torque_rpm', this).text(),                        
+                        engine_type: $('engine_type', this).text(),
+                        engine_valves_per_cyl: $('engine_valves_per_cyl', this).text(),
+                        fuel_capacity_l: $('fuel_capacity_l', this).text(),
+                        height_mm: $('height_mm', this).text(),
+                        id: $('id', this).text(),
+                        length_mm: $('length_mm', this).text(),
+                        lkm_city: $('lkm_city', this).text(),
+                        lkm_hwy: $('lkm_hwy', this).text(),
+                        lkm_mixed: $('lkm_mixed', this).text(),
+                        make: $('make', this).text(),
+                        make_display: $('make_display', this).text(),
+                        model_name: $('model_name', this).text(),
+                        model_trim: $('model_trim', this).text(),
+                        model_year: $('model_year', this).text(),
+                        seats: $('seats', this).text(),
+                        sold_in_us: $('sold_in_us', this).text(),
+                        top_speed_kph: $('top_speed_kph', this).text(),
+                        transmission_type: $('transmission_type', this).text(),
+                        weight_kg: $('weight_kg', this).text(),
+                        wheelbase: $('wheelbase', this).text(),                        
+                        width_mm: $('width_mm', this).text(),                        
+                        zero_to_100_kph: $('zero_to_100_kph', this).text()
+
+                    };
+                    carsArray[i++] = car;
+
+                   // recalls = getRecalls($('#year').val(), $('#make').val(), $('#model').val());
+
+
+                });
+
+                console.log('length of carsArray: ' + carsArray.length + ' i = ' + i);
+                for (j = 0; j < i; j++) {
+
+                    console.log(' In Get TRIMS carsArray['+j+'] '
+                    + ': id ' + carsArray[j].id + ' ' 
+                    + ': model ' + carsArray[j].model_name
+                    + ': trim ' + carsArray[j].model_trim
+                    // + ': engine_cc ' + carsArray[j].engine_cc
+                    // + ': wheelbase ' + carsArray[j].wheelbase
+                    );
+                }
+
+                return carsArray;
+            });  
         }
     }).done(function (data) {
-        console.log('Exiting get trims: length of makesArr: ' + trimsArray.length + ' typeof: ' + typeof trimsArray);
+
     });
 }
 
-function slideTrims(data) {
-
-    console.log('data in TRIM Slider:' + data + '\n typeof' + typeof data + 'length ' + data.length);
-    var i = 0;
-    var trimsArray = [];
-    $(data).find('model_trim').each(function () {
-        trimsArray[i] = $(this).text();
-        console.log('within SLIDER trimsArray = ' + trimsArray[i]);
-        i++;
-    });
-    var j = trimsArray.length;
-
-    $('#trim').val(trimsArray[0]);
-    $('#trim').css('visibility', 'hidden');
-    $('#slideTrims').slider({
-        // orientation: 'vertical',
-        range: 'min',
-        min: 0,
-        max: j,
-        value: 0,
-        slide: function (event, ui) {
-            $('#trim').val(trimsArray[ui.value]);
-            $('#trim').css('visibility', 'visible');
-        },
-        stop: function (event, ui) {
-            // what to do after exiting slider
-        }
-    });
-    $('#trim').val($('#slideTrims').slider('value'));
-};
-
-
 
 function getModels(year, make) {
-        
+    
     var _year = year || '';
-    var _make = make || '';
+    var _make = make.toLowerCase() || '';
     var http = 'http://localhost:57795/api/cars/full?year=' + _year +
         '&make=' + _make + '&model=&trim=&sort=2';
     
-    console.log('getModels search string>>>' + http + '<<<');
+    console.log('GET MODELS search string>>>');// + http + '<<<');
     var modelsArray = [];
 
     $.ajax({
         url: http,
         dataType: 'xml',
+        type: 'GET',
         error: function(xhr, error){
             console.debug(xhr); console.debug(error);
             modelsArray = NULL;
         },
-        
-        type: 'GET',
+
         success: function (data) {
-            var div = $('#models');
-            // console.log('getModels data in success:' + data + '\n typeof' + typeof data + 'length ' + data.length);
-            var i = 0;
-            $(data).find('model_name').each(function() {
-                modelsArray[i] = $(this).text();
-                // console.log('modelsArray >> ' + modelsArray[i]);
-                i++;
+
+            var select = $('#model');
+            var optionsHtml = new Array();
+            var old_label = '';
+            var value = '';
+            $(data).find('model_name').each(function () {
+                var value = $(this).attr('value');
+                var label = $(this).text();
+                if (old_label != '' && label != old_label) {
+                    optionsHtml.push("<option class='ddindent' value='"
+                        + value + "'>" + label + "</option>");
+                }
+                old_label = label;
             });
-            slideModels(data);
+            optionsHtml = optionsHtml.join('');
+            select.append(optionsHtml);
+            select.children(":first").text("Select Model").attr("selected", true);
+           
+            $('#dropdownModels').change(function () {
+                
+                var choice = $('#dropdownModels :selected').text();
+                $('#modelChoice').val(choice);
+                $('#modelChoice').text(choice);
+  
+                getTrims($('#year').val(), $('#make').val(), $('#modelChoice').val());
+            });
 
         }
     }).done(function (data) {
-        // var x = data.getElementsByTagName('string');
         //console.log('Exiting get models: length of makesArr: ' + modelsArray.length + ' typeof: ' + typeof modelsArray);
     });
 
 }
 
+/*
 function slideModels(data) {
-
-    // console.log('data in slideModels:' + data + '\n typeof' + typeof data + 'length ' + data.length);
+    console.log('Entering SLIDE MODELS:');// + data + '\n typeof' + typeof data + 'length ' + data.length);
     var i = 0;
     var modelsArray = [];
     $(data).find('model_name').each(function () {
@@ -176,16 +217,15 @@ function slideModels(data) {
         // console.log('within SLIDER modelsArray = ' + modelsArray[i]);
         i++;
     });
-    var j = modelsArray.length;
-
+    
     $('#model').val(modelsArray[0]);
     $('#model').css('visibility', 'hidden');
-    $('#slideModels').slider({
+    $('#dropdownModels').slider({
         // orientation: 'vertical',
         range: 'min',
         min: 0,
-        max: j,
-        value: Math.round(j / 2, 0),
+        max: modelsArray.length,
+        value: 0,
         slide: function (event, ui) {
             $('#model').val(modelsArray[ui.value]);
             $('#model').css('visibility', 'visible');
@@ -194,15 +234,15 @@ function slideModels(data) {
             // what to do after exiting slider
         }
     });
-    $('#model').val($('#slideModels').slider('value'));
+    $('#model').val($('#dropdownModels').slider('value'));
 };
-
+*/
 
 function getMakes(year) {
 
     var _year = year || '';
     var http = 'http://localhost:57795/api/cars/makes?year=' + _year;
-    // console.log('search string>>>' + http + '<<<');
+    console.log('GET MAKES search string>>>');// + http + '<<<');
     var makesArray = [];
 
     $.ajax({
@@ -212,28 +252,22 @@ function getMakes(year) {
             console.debug(xhr); console.debug(error);
             makesArray = NULL;
         },
-        // jsonpCallback: 'callback',
         type: 'GET',
         success: function (data) {
-            var div = $('#makes');
-            var i = 0;
-            $(data).find('string').each(function () {
-                makesArray[i] = $(this).text();
-                // console.log('makesArray = ' + makesArray[i]);
-                i++;
-            });
+
             slideMakes(data);
 
         }
     }).done(function (data) {
-        //             var x = data.getElementsByTagName('string');
-        console.log('Exiting get makes: length of makesArr: ' + makesArray.length + ' typeof: ' + typeof makesArray);
+        
+        // console.log('Exiting get makes: length of makesArr: ' + makesArray.length + ' typeof: ' + typeof makesArray);
     });
 
 }
 
 
 function slideMakes(xml) {
+    console.log("Entering SLIDE MAKES");
     data = xml;
     var i = 0;
     var makesArray = [];
@@ -242,16 +276,16 @@ function slideMakes(xml) {
         // console.log('makesArray = ' + makesArray[i]);
         i++;
     });
-    var j = makesArray.length;
-    
+
     $('#make').val(makesArray[0]);
     $('#make').css('visibility', 'hidden');
+    var j = makesArray.length;
     $('#slideMakes').slider({
         // orientation: 'vertical',
         range: 'min',
         min: 0,
         max: j,
-        value: Math.round(j/2,0),
+        value: Math.round(j/2),
         slide: function (event, ui) {
             $('#make').val(makesArray[ui.value]);
             $('#make').css('visibility', 'visible');
@@ -265,7 +299,7 @@ function slideMakes(xml) {
 
 
 function slideYears(yr_first, yr_last, yr_start) {
-    console.log('Inside year Slider');
+    console.log('Entering SLIDE YEARS');
     $('#slideYears').slider({
         // orientation: 'vertical',
         range: 'min',
@@ -282,10 +316,9 @@ function slideYears(yr_first, yr_last, yr_start) {
     $('#year').val($('#slideYears').slider('value'));
 };
 
-//$(function initializeErrors() {
+
 function initializeErrors() {
     // console.log('Inside initialize Errors');
-    // alert('Inside ajax setup');
     $.ajaxSetup({
         error: function (jqXHR, exception) {
             if (jqXHR.status === 0) {
@@ -309,7 +342,16 @@ function initializeErrors() {
 
      
 function getRecalls(year, make, model) {
-    var http = 'http://www.nhtsa.gov/webapi/api/Recalls/vehicle/year/2006/make/acura/model/MDX?format=json';
+
+    var _year = year || '';
+    var _make = make || '';
+    var _model = model || '';
+
+    // var http = 'http://www.nhtsa.gov/webapi/api/Recalls/vehicle/year/2006/make/acura/model/MDX?format=json';
+
+    var http = 'http://www.nhtsa.gov/webapi/api/Recalls/vehicle/year/'
+    + _year + '/make/' + _make + '/model/' + _model + '?format=json';
+    console.log('in GET RECALLS ' + http);
 
     $.ajax({
         url: http,
@@ -323,6 +365,10 @@ function getRecalls(year, make, model) {
                     +data.Results[i].year + ' ' +
                     +data.Results[i].Conequence + '</div>');
             }
+        S},
+        error: function (xhr, error) {
+            console.debug(xhr); console.debug(error);
+            makesArray = NULL;
         }
     }).done(function (data) {
         // if (console && console.log) {
