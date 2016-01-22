@@ -15,8 +15,14 @@
                 @Html.ActionLink("Help Page Home", "Index")
             </p>
         </div>
+
     </section>
     <section class="content-wrapper main-content clear-fix">
         @Html.DisplayForModel()
     </section>
 </div>
+@Html.DisplayForModel("TestClientDialogs");
+@section Scripts {
+    <link type="text/css" href="~/Areas/HelpPage/HelpPage.css" rel="stylesheet" />
+    @Html.DisplayForModel("TestClientReferences");
+}

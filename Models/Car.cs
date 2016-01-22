@@ -5,14 +5,18 @@ namespace ProductsApp.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-
+    /// <summary>
+    /// CarMake is a string containing the "make" or manufacturer listed in the CarFinder database
+    /// </summary>
     public class CarMake
     {
         [StringLength(50)]
         public string make { get; set; }
     }
 
-
+    /// <summary>
+    /// Car is an object containing all the elements in the CarFinder database
+    /// </summary>
     public partial class Car
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

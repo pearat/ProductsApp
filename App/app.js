@@ -1,0 +1,1 @@
+﻿angular.module('carApp', ['trNgGrid','ui.bootstrap']);

@@ -2,82 +2,145 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>ASP.NET app</title>
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <title>Car Finder</title>
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="trNgGrid-master/trNgGrid.css" rel="stylesheet" />
     <link href="css/carFinder.css" rel="stylesheet" />
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 5px;
+        }
+    </style>
 </head>
 
-<body class="ui-widget-content" style="border:0;">
+<body ng-app="carApp" class="container ng-cloak" style="border:0;">
 
-    
-        <p>
-            <label for="year">Year:</label>
-            <input type="text" id="year" readonly style="border:0; color:#f6931f; font-weight:bold;">
-        </p>
-        <div id="slideYears" style="height:10px; width:60%"></div>
-
-        <p>
-            <label for="make">Make:</label>
-            <input type="text" id="make" readonly style="border:0; color:#f6931f; font-weight:bold;">
-        </p>
-        <div id="slideMakes" style="height:10px; width:60%"></div>
-
-        <!--<p>
-            <label for="model">Model:</label>
-            <input type="text" id="model" readonly style="border:0; color:#f6931f; font-weight:bold;">
-        </p>
-        <div id="slideModels" style="height:10px;"></div>-->
-
-    <p><br /></p>
-        <div id="dropdownModels">
-            <label for="model">Model:</label>
-            <select id="model">
-                 <option>loading</option>
-            </select>
-        </div>
+    <div ng-controller="carCtrl as cars">
+        <!--<button ng-click="{{cars.startYears}}"> Start with Year or Make?</button>
+        <form name="myForm" ng-controller="ExampleController">
+            <label>
+                <input type="radio" ng-model="cars.startYears" value="true">
+                Search Years
+            </label><br />
+            <label>
+                <input type="radio" ng-model="cars.startYears" value="false">
+                Search Makes
+            </label><br />
+            
+            <tt>color = {{cars.startYears | json}}</tt><br />
+        </form>-->
         
-        <p id="modelChoice">Loading</p>
+        <select ng-options="y for y in cars.years" ng-model="cars.selected.year" ng-change="cars.getMakes()">
+            {{y}}
+        </select>
+        <select ng-options="mak for mak in cars.makes" ng-model="cars.selected.make" ng-change="cars.getModels()">
+            {{mak}}
+        </select>
+        <select ng-options="mod for mod in cars.models" ng-model="cars.selected.model" ng-change="cars.getTrims()">
+            {{mod}}
+        </select>
+        <select ng-options="t for t in cars.trims" ng-model="cars.selected.trim" ng-change="cars.getCars()">
+            {{t}}
+        </select>
+        <br />
+        
+        
+        <table tr-ng-grid="" items="cars.cars" page-items="10">
+            <thead>
+                <tr>
+                    <th field-name="model_year" display-name="Year"></th>
+                    <th field-name="make_display"></th>
+                    <th field-name="model_name" display-name="Model"></th>
+                    <th field-name="model_trim"            display-name="Trim"></th>
+                    <th field-name="engine_power_ps" display-name="Power PS"></th>
+                    <th field-name="engine_num_cyl" display-name="Cylinders"</th>
+                    <th field-name="lkm_mixed" display-name="KPG"></th>
+                    <th field-name="top_speed_kph" display-name="Top Speed Kph"></th>
+                    <th field-name="zero_to_100_kph" display-name="0 to 100k secs"></th>
+                    <th field-name="weight_kg" display-name="Weight Kg"></th>
+                    <th field-name="sold_in_us" display-name="In USA?"></th>
 
-        <div id="dropdownTrims">
-            <label for="trim">Trim:</label>
-            <select id="trim">
-                <option>loading</option>
-            </select>
-        </div>
-    
-    <p id="trimChoice">Loading</p>
+                </tr>
+                </thead>
+            <tbody>
+                <tr>
+                    <td><button ng-click="cars.open(gridItem.id)"> Info</button></td>
+                    
+                </tr>
+            </tbody>
+        </table>
 
-    <!--<select id="details"></select>-->
+      
+            <script type="text/ng-template" id="carModal.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        {{cm.car.car.model_year}} {{cm.car.car.make_display}} {{cm.car.car.model_name}} 
+                        <button class="pull-right btn btn-default" ng-click="cm.cancel()">X</button>
+                    </h3>
+                    
+                    '<img src="{{cm.car.image}}" alt="Car Picture" style="width:304px;height:228px;">';
+                    
+                </div>
+                <div class="modal-body">
+                    <h2> in the modal</h2>
 
+                    <p>Model Name {{cm.car.car.model_name}}</p>
 
+                    <!--<table tr-ng-grid="" items="cars.cars" page-items="10">
+                    <thead>
+                        <tr>
+                            <th field-name="model_year" display-name="Year"></th>
+                            <th field-name="make"></th>
+                            <th field-name="model_name" display-name="Model"></th>
+                            <th field-name="model_trim" display-name="Trim"></th>
+                            <th field-name="engine_power_ps" display-name="Power PS"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><button ng-click="cars.open(gridItem.id)"> Info</button></td>
+                        </tr>
+                    </tbody>
+                </table>-->
 
-        <!--<p>
-            <label for="trim">Trim:</label>
-            <input type="text" id="trim" readonly style="border:0; color:#f6931f; font-weight:bold;">
-        </p>
-        <div id="slideTrims" style="height:20px;"></div>-->
+                </div>
+                <div class="modal-footer">
+
+                    <button class="btn btn-primary" ng-click="cm.ok()">OK</button>
+                    <button class="btn btn-warning" ng-click="cm.cancel()">Cancel</button>
+                    <p id="recallData">Number of recalls: {{cm.car.recalls.Count}}</p>
+                </div>
+            </script>
+        
+
+        <span style="display:inline">
+
+        </span>
+
+        <h2>Images</h2>
+        <div id="carPics"></div>
 
         <h2>NHTSA Data</h2>
-        <div id="data"></div>
-
-
-        <section id="colorSlider">
-            <p class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px;">
-                <span class="ui-icon ui-icon-pencil" style="float:left; margin:-2px 5px 0 0;"></span>
-                Simple Colorpicker
-            </p>
-
-            <div id="red"></div>
-            <div id="green"></div>
-            <div id="blue"></div>
-
-            <div id="swatch" class="ui-widget-content ui-corner-all"></div>
-        </section>
+        <div id="recallData"></div>
+    </div>
 
 </body>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-<script src="./Scripts/CarFinder.js"></script>
+<script src="Scripts/jquery.min.js"></script>
+<script src="Scripts/jquery-ui-1.11.4.min.js"></script>
+<script src="Scripts/angular.js"></script>
+<script src="Scripts/angular-ui/ui-bootstrap.min.js"></script>
+<script src="Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+<script src="trNgGrid-master/trNgGrid.js"></script>
+<script src="App/app.js"></script>
+<!--<script src="App/fakeSvc.js"></script>-->
+<script src="App/carSvc.js"></script>
+<script src="App/carFrontEndCtrl.js"></script>
 
 </html>

@@ -481,14 +481,151 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:ProductsApp.Controllers.CarsController.GetCars4YrMakeModelTrim(System.String,System.String,System.String,System.String,System.String)" -->
-        <member name="M:ProductsApp.Controllers.CarsController.GetCarMakes4Yr(System.String)">
+        <member name="T:ProductsApp.Controllers.CarsController">
+            <summary>
+            CarsController contains three individual controllers
+            </summary>
+        </member>
+        <member name="T:ProductsApp.Controllers.CarsController.Selected">
+            <summary>
+            Selected is an object 
+            </summary>
+        </member>
+        <member name="M:ProductsApp.Controllers.CarsController.GetCarMakes4Yr(ProductsApp.Controllers.CarsController.Selected)">
             <summary>
             This API returns a list of the distinct car makes for the year in question
             For example, for 2001 it returns ... bugatti, buick, cadilac, chevrolet...
             </summary>
             <param name="year"></param>
             <returns></returns>
+        </member>
+        <member name="M:ProductsApp.Controllers.CarsController.GetCars4YrMakeModelTrim(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            This API returns a list of cars records for based on up to 4 parameters and a sort code (all optional)  
+            through a GET request.  Year is a 4 digit number, e.g.,  2011; make is the manufacturer's name, e.g., honda
+            model is the type of car, e.g., accord; trim is its configuration, e.g., EX-L 2dr Coupe (2.4L 4cyl CVT)
+            sort, default by date, 1 by make, 2 by model.
+            </summary>
+            <param name="year"></param>
+            <param name="make"></param>
+            <param name="model"></param>
+            <param name="trim"></param>
+            <param name="sort"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProductsApp.Controllers.CarsController.GetDetails(ProductsApp.Controllers.CarsController.CarId)">
+            <summary>
+            Use Post 
+            </summary>
+            <param name="selected object with year, make, model, trim and (sort -- not used)objectwithyear,make,model,trimand(sort--notused) "></param>
+            <returns>
+            JSON compound ojbect with one or more recall records and photos
+            </returns>
+        </member>
+        <member name="M:ProductsApp.Controllers.CarsController.getCar(System.Int32)">
+            <summary>
+            This API takes an Id number from the CarFinders database and returns a list of recalls from the 
+            Natl Highway Traffic Safety Administration (NHTSA), if any, along with links to images, if available.
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ProductsApp.Models.CarMake">
+            <summary>
+            CarMake is a string containing the "make" or manufacturer listed in the CarFinder database
+            </summary>
+        </member>
+        <member name="T:ProductsApp.Models.Car">
+            <summary>
+            Car is an object containing all the elements in the CarFinder database
+            </summary>
+        </member>
+        <member name="M:Bing.BingSearchContainer.Composite(System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Double},System.Nullable{System.Double},System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            </summary>
+            <param name="Sources">Bing search sources Sample Values : web+image+video+news+spell</param>
+            <param name="Query">Bing search query Sample Values : xbox</param>
+            <param name="Options">Specifies options for this request for all Sources. Valid values are: DisableLocationDetection, EnableHighlighting. Sample Values : EnableHighlighting</param>
+            <param name="WebSearchOptions">Specify options for a request to the Web SourceType. Valid values are: DisableHostCollapsing, DisableQueryAlterations. Sample Values : DisableQueryAlterations</param>
+            <param name="Market">Market. Note: Not all Sources support all markets. Sample Values : en-US</param>
+            <param name="Adult">Adult setting is used for filtering sexually explicit content Sample Values : Moderate</param>
+            <param name="Latitude">Latitude Sample Values : 47.603450</param>
+            <param name="Longitude">Longitude Sample Values : -122.329696</param>
+            <param name="WebFileType">File extensions to return Sample Values : XLS</param>
+            <param name="ImageFilters">Array of strings that filter the response the API sends based on size, aspect, color, style, face or any combination thereof. Valid values are: Size:Small, Size:Medium, Size:Large, Size:Width:[Width], Size:Height:[Height], Aspect:Square, Aspect:Wide, Aspect:Tall, Color:Color, Color:Monochrome, Style:Photo, Style:Graphics, Face:Face, Face:Portrait, Face:Other. Sample Values : Size:Small+Aspect:Square</param>
+            <param name="VideoFilters">Array of strings that filter the response the API sends based on size, aspect, color, style, face or any combination thereof. Valid values are: Duration:Short, Duration:Medium, Duration:Long, Aspect:Standard, Aspect:Widescreen, Resolution:Low, Resolution:Medium, Resolution:High. Sample Values : Duration:Short+Resolution:High</param>
+            <param name="VideoSortBy">The sort order of results returned Sample Values : Date</param>
+            <param name="NewsLocationOverride">Overrides Bing location detection. This parameter is only applicable in en-US market. Sample Values : US.WA</param>
+            <param name="NewsCategory">The category of news for which to provide results Sample Values : rt_Business</param>
+            <param name="NewsSortBy">The sort order of results returned Sample Values : Date</param>
+        </member>
+        <member name="M:Bing.BingSearchContainer.Web(System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Double},System.Nullable{System.Double},System.String)">
+            <summary>
+            </summary>
+            <param name="Query">Bing search query Sample Values : xbox</param>
+            <param name="Options">Specifies options for this request for all Sources. Valid values are: DisableLocationDetection, EnableHighlighting. Sample Values : EnableHighlighting</param>
+            <param name="WebSearchOptions">Specify options for a request to the Web SourceType. Valid values are: DisableHostCollapsing, DisableQueryAlterations. Sample Values : DisableQueryAlterations</param>
+            <param name="Market">Market. Note: Not all Sources support all markets. Sample Values : en-US</param>
+            <param name="Adult">Adult setting is used for filtering sexually explicit content Sample Values : Moderate</param>
+            <param name="Latitude">Latitude Sample Values : 47.603450</param>
+            <param name="Longitude">Longitude Sample Values : -122.329696</param>
+            <param name="WebFileType">File extensions to return Sample Values : XLS</param>
+        </member>
+        <member name="M:Bing.BingSearchContainer.Image(System.String,System.String,System.String,System.String,System.Nullable{System.Double},System.Nullable{System.Double},System.String)">
+            <summary>
+            </summary>
+            <param name="Query">Bing search query Sample Values : xbox</param>
+            <param name="Options">Specifies options for this request for all Sources. Valid values are: DisableLocationDetection, EnableHighlighting. Sample Values : EnableHighlighting</param>
+            <param name="Market">Market. Note: Not all Sources support all markets. Sample Values : en-US</param>
+            <param name="Adult">Adult setting is used for filtering sexually explicit content Sample Values : Moderate</param>
+            <param name="Latitude">Latitude Sample Values : 47.603450</param>
+            <param name="Longitude">Longitude Sample Values : -122.329696</param>
+            <param name="ImageFilters">Array of strings that filter the response the API sends based on size, aspect, color, style, face or any combination thereof. Valid values are: Size:Small, Size:Medium, Size:Large, Size:Width:[Width], Size:Height:[Height], Aspect:Square, Aspect:Wide, Aspect:Tall, Color:Color, Color:Monochrome, Style:Photo, Style:Graphics, Face:Face, Face:Portrait, Face:Other. Sample Values : Size:Small+Aspect:Square</param>
+        </member>
+        <member name="M:Bing.BingSearchContainer.Video(System.String,System.String,System.String,System.String,System.Nullable{System.Double},System.Nullable{System.Double},System.String,System.String)">
+            <summary>
+            </summary>
+            <param name="Query">Bing search query Sample Values : xbox</param>
+            <param name="Options">Specifies options for this request for all Sources. Valid values are: DisableLocationDetection, EnableHighlighting. Sample Values : EnableHighlighting</param>
+            <param name="Market">Market. Note: Not all Sources support all markets. Sample Values : en-US</param>
+            <param name="Adult">Adult setting is used for filtering sexually explicit content Sample Values : Moderate</param>
+            <param name="Latitude">Latitude Sample Values : 47.603450</param>
+            <param name="Longitude">Longitude Sample Values : -122.329696</param>
+            <param name="VideoFilters">Array of strings that filter the response the API sends based on size, aspect, color, style, face or any combination thereof. Valid values are: Duration:Short, Duration:Medium, Duration:Long, Aspect:Standard, Aspect:Widescreen, Resolution:Low, Resolution:Medium, Resolution:High. Sample Values : Duration:Short+Resolution:High</param>
+            <param name="VideoSortBy">The sort order of results returned Sample Values : Date</param>
+        </member>
+        <member name="M:Bing.BingSearchContainer.News(System.String,System.String,System.String,System.String,System.Nullable{System.Double},System.Nullable{System.Double},System.String,System.String,System.String)">
+            <summary>
+            </summary>
+            <param name="Query">Bing search query Sample Values : xbox</param>
+            <param name="Options">Specifies options for this request for all Sources. Valid values are: DisableLocationDetection, EnableHighlighting. Sample Values : EnableHighlighting</param>
+            <param name="Market">Market. Note: Not all Sources support all markets. Sample Values : en-US</param>
+            <param name="Adult">Adult setting is used for filtering sexually explicit content Sample Values : Moderate</param>
+            <param name="Latitude">Latitude Sample Values : 47.603450</param>
+            <param name="Longitude">Longitude Sample Values : -122.329696</param>
+            <param name="NewsLocationOverride">Overrides Bing location detection. This parameter is only applicable in en-US market. Sample Values : US.WA</param>
+            <param name="NewsCategory">The category of news for which to provide results Sample Values : rt_Business</param>
+            <param name="NewsSortBy">The sort order of results returned Sample Values : Date</param>
+        </member>
+        <member name="M:Bing.BingSearchContainer.RelatedSearch(System.String,System.String,System.String,System.String,System.Nullable{System.Double},System.Nullable{System.Double})">
+            <summary>
+            </summary>
+            <param name="Query">Bing search query Sample Values : xbox</param>
+            <param name="Options">Specifies options for this request for all Sources. Valid values are: DisableLocationDetection, EnableHighlighting. Sample Values : EnableHighlighting</param>
+            <param name="Market">Market. Note: Not all Sources support all markets. Sample Values : en-US</param>
+            <param name="Adult">Adult setting is used for filtering sexually explicit content Sample Values : Moderate</param>
+            <param name="Latitude">Latitude Sample Values : 47.603450</param>
+            <param name="Longitude">Longitude Sample Values : -122.329696</param>
+        </member>
+        <member name="M:Bing.BingSearchContainer.SpellingSuggestions(System.String,System.String,System.String,System.String,System.Nullable{System.Double},System.Nullable{System.Double})">
+            <summary>
+            </summary>
+            <param name="Query">Bing search query Sample Values : xblox</param>
+            <param name="Options">Specifies options for this request for all Sources. Valid values are: DisableLocationDetection, EnableHighlighting. Sample Values : EnableHighlighting</param>
+            <param name="Market">Market. Note: Not all Sources support all markets. Sample Values : en-US</param>
+            <param name="Adult">Adult setting is used for filtering sexually explicit content Sample Values : Moderate</param>
+            <param name="Latitude">Latitude Sample Values : 47.603450</param>
+            <param name="Longitude">Longitude Sample Values : -122.329696</param>
         </member>
     </members>
 </doc>
