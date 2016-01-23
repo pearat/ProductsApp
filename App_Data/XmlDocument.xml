@@ -519,12 +519,12 @@
             </summary>
             <param name="selected object with year, make, model, trim and (sort -- not used)objectwithyear,make,model,trimand(sort--notused) "></param>
             <returns>
-            JSON compound ojbect with one or more recall records and photos
+            JSON compound ojbect of car and one or more complaint records and photos
             </returns>
         </member>
         <member name="M:ProductsApp.Controllers.CarsController.getCar(System.Int32)">
             <summary>
-            This API takes an Id number from the CarFinders database and returns a list of recalls from the 
+            This API takes an Id number from the CarFinders database and returns a list of recall from the 
             Natl Highway Traffic Safety Administration (NHTSA), if any, along with links to images, if available.
             </summary>
             <param name="Id"></param>

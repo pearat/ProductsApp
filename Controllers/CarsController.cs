@@ -53,9 +53,7 @@ namespace ProductsApp.Controllers
             };
             return Ok(years);
         }
-
-
-
+        
         [Route("GetModelYears")]
         [HttpPost]
         public IHttpActionResult GetModelYears(Selected selected)
@@ -76,7 +74,7 @@ namespace ProductsApp.Controllers
         /// <param name="year"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("GetMakes")]
+        [Route("GetMakes4Yr")]
         public IHttpActionResult GetCarMakes4Yr(Selected selected)
         {
             var _yr = new SqlParameter("@yr", selected.year ?? "");
@@ -85,8 +83,18 @@ namespace ProductsApp.Controllers
                 "EXEC GetCarMakes4Yr @yr", _yr).ToList();
 
             return Ok(retval);
-
         }
+
+        [HttpPost]
+        [Route("GetAllMakes")]
+        public IHttpActionResult GetAllMakes(Selected selected)
+        {
+            var retval = db.Database.SqlQuery<string>(
+                "EXEC GetAllMakes").ToList();
+
+            return Ok(retval);
+        }
+
 
         [HttpPost]
         [Route("GetModels")]
@@ -164,7 +172,7 @@ namespace ProductsApp.Controllers
         /// </summary>
         /// <param name="selected object with year, make, model, trim and (sort -- not used) "></param>
         /// <returns>
-        /// JSON compound ojbect with one or more recall records and photos
+        /// JSON compound ojbect of car and one or more complaint records and photos
         /// </returns>
         [Route("GetDetails")]
         [HttpPost]
@@ -181,7 +189,7 @@ namespace ProductsApp.Controllers
                 client.BaseAddress = new Uri("http://www.nhtsa.gov/");
                 try
                 {
-                    response = await client.GetAsync("webapi/api/Recalls/vehicle/modelyear/" + Car.model_year +
+                    response = await client.GetAsync("webapi/api/recalls/vehicle/modelyear/" + Car.model_year +
                                                                                     "/make/" + Car.make +
                                                                                     "/model/" + Car.model_name + "?format=json");
                     content = await response.Content.ReadAsStringAsync();
@@ -210,7 +218,7 @@ namespace ProductsApp.Controllers
 
 
         /// <summary>
-        /// This API takes an Id number from the CarFinders database and returns a list of recalls from the 
+        /// This API takes an Id number from the CarFinders database and returns a list of recall from the 
         /// Natl Highway Traffic Safety Administration (NHTSA), if any, along with links to images, if available.
         /// </summary>
         /// <param name="Id"></param>
@@ -230,7 +238,7 @@ namespace ProductsApp.Controllers
                 try
                 {
                     
-                    content = await response.Content.ReadAsStringAsync();response = await client.GetAsync("webapi/api/Recalls/vehicle/modelyear/" + Car.model_year +
+                    content = await response.Content.ReadAsStringAsync();response = await client.GetAsync("webapi/api/recalls/vehicle/modelyear/" + Car.model_year +
                                                                                     "/make/" + Car.make +
                                                                                     "/model/" + Car.model_name + "?format=json");
                 }
@@ -258,9 +266,6 @@ namespace ProductsApp.Controllers
                 return InternalServerError(e);
             }
             return Ok(new { car = Car, recalls = Recalls, image = Image });
-
         }
-
-
     }
 }

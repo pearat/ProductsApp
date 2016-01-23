@@ -3,7 +3,7 @@
     var service = {};
 
     service.getYears = function (selected) {
-        if (selected.make === '') {
+        if (selected.startYears) {
             return $http.post('/api/Cars/GenerateYears').then(function (response) {
                 return response.data;
             });
@@ -16,11 +16,20 @@
     }
 
     service.getMakes = function (selected) {
-        return $http.post('/api/Cars/GetMakes', selected).then(
-            function (response) {
+        console.log('inside GetMakes, startYears: '+selected.startYears+' year: '+selected.year);
+        if (selected.startYears) {
+            //if (selected.year == '')
+            //    alert('Call to get Makes without specifying year!');
+                return $http.post('/api/cars/getmakes4yr', selected).then(function (response) {
+                        return response.data;
+                });
+        }
+        else {
+            //alert('Call to get ALL Makes');
+            return $http.post('/api/Cars/GetAllMakes', selected).then(function (response) {
                 return response.data;
-            }
-        )
+            });
+        }
     }
 
     service.getModels = function (selected) {
@@ -47,7 +56,8 @@
     }
 
     service.getCars = function (selected) {
-
+        if (selected.year == '' && selected.make == '')
+            alert('Trying to get All Cars from database without specifying either year or make');
         return $http.post('/api/Cars/GetCars',selected).then(function (response) {
             return response.data;
         })
