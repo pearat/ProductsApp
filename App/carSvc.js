@@ -1,6 +1,7 @@
 ﻿angular.module('carApp').factory('carSvc',['$http', function($http){
 
     var service = {};
+    var scope = this;
 
     service.getYears = function (selected) {
         if (selected.startYears) {
@@ -16,16 +17,13 @@
     }
 
     service.getMakes = function (selected) {
-        console.log('inside GetMakes, startYears: '+selected.startYears+' year: '+selected.year);
+       
         if (selected.startYears) {
-            //if (selected.year == '')
-            //    alert('Call to get Makes without specifying year!');
                 return $http.post('/api/cars/getmakes4yr', selected).then(function (response) {
                         return response.data;
                 });
         }
         else {
-            //alert('Call to get ALL Makes');
             return $http.post('/api/Cars/GetAllMakes', selected).then(function (response) {
                 return response.data;
             });
@@ -56,19 +54,44 @@
     }
 
     service.getCars = function (selected) {
-        if (selected.year == '' && selected.make == '')
+        // $rootScope.progressing = true;
+        // startSpin();
+        console.log('-- Inside getCars() -- ');
+        if (selected.year == '' && selected.make == '') {
             alert('Trying to get All Cars from database without specifying either year or make');
-        return $http.post('/api/Cars/GetCars',selected).then(function (response) {
-            return response.data;
-        })
+            return;
+        } 
+        return $http.post('/api/Cars/GetCars', selected).then(
+            function (response) {
+                // $rootScope.progressing = false;
+                //stopSpin();
+                return response.data;
+            },
+            function () {
+                // error
+                // selected.progressing = false;
+                // stopSpin();
+            }
+        )
     }
 
-    service.getDetails = function (id) {
-        console.log('Inside GetDetails, id: '+ id+' typeof '+ typeof id);
-        return $http.post('/api/Cars/GetDetails', { id: id }).then(function (response) {
-            return response.data;
-        })
+    service.getDetails = function (id, scope) {
+        // scope.progressing = true;
+        
+        return $http.post('/api/Cars/GetDetails', { id: id })
+        .then(
+            function (response) {
+                response.data.recalls = $.parseJSON(response.data.recalls);
+                // scope.progressing = false;
+                return response.data;
+            },
+            function () {
+                //error
+                // scope.prograssing = false;
+            }
+        );
     }
 
     return service;
+    
 }])

@@ -1,11 +1,8 @@
-﻿
-    (function () {
-    
-    
-
+﻿(function () {
     var app = angular.module('carApp');
-    app
-        .filter('kph2mph', function () {
+
+   
+    app.filter('kph2mph', function () {
             return function (fieldValueUnused, car) {
                 if (car == undefined) {
                     return '';
@@ -23,7 +20,6 @@
                     if (k ==0) return null;
                     var j = Math.round( k * 2.2, 0);
                     var m = j.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    console.log(' j: ' + j + ' m: ' + m); 
                     return m;
                 }
             }
@@ -49,10 +45,38 @@
                 }
             }
         })
-
-        .controller('carCtrl', ['carSvc', '$uibModal', function (carSvc, $uibModal) {
+        .controller('carCtrl', ['carSvc', '$uibModal', 'usSpinnerService','$rootScope', 
+            function (carSvc, $uibModal, usSpinnerService, $rootScope) {
             var scope = this;
 
+            /* ****************************** /
+            
+            scope.startcounter = 0;
+            scope.startSpin = function () {
+                if (!scope.spinneractive) {
+                    usSpinnerService.spin('spinner-1');
+                    scope.startcounter++;
+                }
+            };
+
+            scope.stopSpin = function () {
+                if (scope.spinneractive) {
+                    usSpinnerService.stop('spinner-1');
+                }
+            };
+            scope.spinneractive = true;
+
+            $rootScope.$on('us-spinner:spin', function (event, key) {
+                scope.spinneractive = true;
+            });
+
+            $rootScope.$on('us-spinner:stop', function (event, key) {
+                scope.spinneractive = false;
+            });
+
+            /******************************* */
+
+            scope.isLoading = false;
             scope.years = [];
             scope.makes = [];
             scope.models = [];
@@ -64,49 +88,27 @@
                 model: '',
                 trim: '',
                 sort: '3',
-                startYears: true
+                startYears: true,
+                progressing: true
             }
 
-            
-
             scope.getMakes = function () {
-                //if (!scope.selected.startYears) {
-                //    scope.selected.year = '';
-                //    scope.years = [];
-                //    scope.makes = [];
-                //    scope.cars = [];
-                //}
+
                 carSvc.getMakes(scope.selected).then(function (data) {
                     scope.makes = data;
-                    //scope.models = [];
-                    //scope.trims = [];
-                    //scope.selected.make = '';
-                    //scope.selected.model = '';
-                    //scope.selected.trim = '';
-                    if (scope.selected.startYears && scope.selected.year !== '') {
-                        console.log('Inside getMakes() <<<');
-                     //   scope.getCars();
-                    }
+                    if (scope.selected.year !== '' || scope.selected.make !== '')
+                        scope.getCars();
+                     
                 });
             }
 
 
             scope.getYears = function() { 
-                //if (scope.selected.startYears) {
-                //    scope.selected.make = '';
-                //    scope.makes = [];
-                //}
+
                 carSvc.getYears(scope.selected).then(function (data) {
                     scope.years = data;
-                    //scope.models = [];
-                    //scope.trims = [];
-                    //scope.selected.year = '';
-                    //scope.selected.model = '';
-                    //scope.selected.trim = '';   
-                    if (!scope.selected.startYears && scope.selected.make !== '') {
-                        console.log('>>>>> Inside getyears() ');
-                     scope.getCars();
-                    }
+                    if (scope.selected.year !=='' || scope.selected.make !== '') 
+                        scope.getCars();
                 });
             }
 
@@ -131,10 +133,14 @@
 
 
             scope.getCars = function () {
+                //scope.startSpin();
                 console.log('Inside getCars, year: ' + scope.selected.year + ' make: ' + scope.selected.make); 
+                
                 carSvc.getCars(scope.selected).then(function (data) {
                     scope.cars = data;
-                })
+                });
+                // .scope.stopSpin(); 
+                
             };
 
             scope.open = function (id) {
@@ -153,8 +159,8 @@
             };
     
             scope.changeSearchOrder = function () {
-                var saveStart = scope.selected.startYears;
-                $('input[name=startYears]').val([saveStart]);    
+                //var saveStart = scope.selected.startYears;
+                //$('input[name=startYears]').val([saveStart]);    
                 scope.years = [];
                 scope.makes = [];
                 scope.models = [];
@@ -164,9 +170,7 @@
                 scope.selected.make = '';
                 scope.selected.model = '';
                 scope.selected.trim = '';
-                    
-                scope.selected.startYears = saveStart;
-                console.log('Inside changeSearchOrder(), yearSelect? ' + scope.selected.startYears+ ' saveStart: '+saveStart);
+                //scope.selected.startYears = saveStart;
                 if (scope.selected.startYears) {
                     scope.getYears();
                 } else {
@@ -184,31 +188,19 @@
     }]);
 
 
-    angular.module('carApp').controller('carModalCtrl', ['$uibModalInstance', 'car', function ($uibModalInstance, car) {
+    app.controller('carModalCtrl', ['$uibModalInstance', 'car', function ($uibModalInstance, car) {
         var scope = this;
         scope.n = 0;
-        scope.car = car;  // includes recall, pic and car record
-        //scope.cArray = [];
-        //console.log('image URL: ' + car.image);
-        //console.log('car.car.model_name ' + car.car.model_name);
-        //console.log('car.recalls.Count ' + car.recalls.Count);
-        //for (i = 0; i < car.recalls.Count; i++) {
-        //    console.log('Component ' + car.recalls.Results[i].Component);
-        //    scope.cArray[i].Component = car.recalls.Results[i].Component;
-        //    scope.cArray[i].Summary = car.recalls.Results[i].Summary;
-        //    scope.cArray[i].Date = car.recalls.Results[i].DateOfIncident;
-        //    scope.cArray[i].ODI = car.recalls.Results[i].ODINumber;
-
-        //}
-        // scope.car.cArray = car.recalls.Results[0].Component;
-
-        if ( angular.isArray(car.recalls.Results) ) {
-            scope.complaints = car.recalls.Results;
+        scope.car = car;
+        var ct = car.recalls.Count;
+        console.log('car.recalls.Count ' + ct);
+        var jsonDate = dateString = '';
+        for (i = 0; i < ct; i++) {
+            jsonDate = $.trim(car.recalls.Results[i].ReportReceivedDate);
+            dateString = parseJsonDate(jsonDate);
+            // console.log('*** jsonDate:>' + jsonDate + '<:***:>' + dateString + '<:***');
+            car.recalls.Results[i].ReportReceivedDate = dateString;
         }
-        else {
-            scope.complaints = [car.recalls.Results];
-        }
-
         scope.ok = function () {
             $uibModalInstance.close();
         };
@@ -216,4 +208,55 @@
             $uibModalInstance.dismiss();
         };
     }]);
+
+
+    
+    /* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */
+
+    app.controller('AccordionDemoCtrl', function ($scope) {
+        $scope.oneAtATime = true;
+
+        $scope.groups = [
+        {
+            title: 'Dynamic Group Header - 1',
+            content: 'Dynamic Group Body - 1'
+        },
+        {
+            title: 'Dynamic Group Header - 2',
+            content: 'Dynamic Group Body - 2'
+        }
+        ];
+
+        $scope.items = ['Item 1', 'Item 2', 'Item 3'];
+
+        $scope.addItem = function() {
+        var newItemNo = $scope.items.length + 1;
+        $scope.items.push('Item ' + newItemNo);
+        };
+
+        $scope.status = {
+        isFirstOpen: true,
+        isFirstDisabled: false
+        };
+    });
+
+    /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
+
 })();
+
+
+
+function parseJsonDate(jsonDateString) {
+
+    var a = new Date(parseInt(jsonDateString.replace('/Date(', '')));
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    //var hour = a.getHours();
+    //var min = a.getMinutes();
+    //var sec = a.getSeconds();
+    var calendarDate = date + ' ' + month + ' ' + year;
+    return calendarDate;
+}
+

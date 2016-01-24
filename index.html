@@ -5,11 +5,12 @@
     <title>Car Finder</title>
     <link href="Content/bootstrap.css" rel="stylesheet" />
     <link href="trNgGrid-master/trNgGrid.css" rel="stylesheet" />
+    <link href="Content/themes/base/spinner.css" rel="stylesheet" />
     <link href="css/carFinder.css" rel="stylesheet" />
     <style>
         table, th, td {
             border: 1px solid black;
-            border-collapse: collapse;
+            border-collapse: collapse;  
         }
 
         th, td {
@@ -19,140 +20,202 @@
 </head>
 
 <body ng-app="carApp" class="container ng-cloak" style="border:0;">
-    <div ng-controller="carCtrl as cars">
-        
-        <form name="myForm" style="display:inline">
-            Start searching for Cars
-            <label>
-                <!--<input type="radio" style="display:inline" ng-model="cars.selected.startYears"--> 
-                <input type="radio" name="startYears" style="display:inline" ng-model="cars.selected.startYears"
-                       ng-change="cars.changeSearchOrder()" ng-value="true" >
-                by year
-            </label>
-            <label>
-                <!--<input type="radio" style="display:inline" ng-model="cars.selected.startYears"-->
+  <div id="loading"></div>
+    <div class="container">
+        <div ng-controller="carCtrl as cars">
 
-                <input type="radio" name="startYears" style="display:inline" ng-model="cars.selected.startYears" 
-                       ng-change="cars.changeSearchOrder()" ng-value="false" 
-                       >
-                by make
-            </label>
-        </form>
-        
-        <br />
+            <form name="myForm" style="display:inline">
+                Start searching for Cars
+                <label>
+                    <!--<input type="radio" style="display:inline" ng-model="cars.selected.startYears"-->
+                    <input type="radio" name="startYears" style="display:inline" ng-model="cars.selected.startYears"
+                           ng-change="cars.changeSearchOrder()" ng-value="true">
+                    by year
+                </label>
+                <label>
+                    <!--<input type="radio" style="display:inline" ng-model="cars.selected.startYears"-->
+
+                    <input type="radio" name="startYears" style="display:inline" ng-model="cars.selected.startYears"
+                               ng-change="cars.changeSearchOrder()" ng-value="false">
+                    by make
+                </label>
+            </form>
+            <!--<p> isLoading? (T/F): {{ cars.isLoading }}</p>
+            <cc-spinner is-loading="cars.isLoading" message="Loading..."></cc-spinner>
+            <div class="spinner"
+                 ng-show="isLoading">
+                <span us-spinner="{radius:8, width:5, length: 3, lines:9}"></span>
+
+                <p>{{ message }}</p>
+            </div>
+            <h1>Hello Spinner!</h1>
+            <input type="button" ng-click="cars.startSpin()" value="Start spinner" />
+            <input type="button" ng-click="cars.stopSpin()" value="Stop spinner" />
+            <br />Spinner active: {{cars.spinneractive}}<br />Started: {{cars.startcounter}} times<br />
+            <span us-spinner="{radius:20, width:8, length: 16, color: blue}" spinner-key="spinner-1"></span>
+            <circle-spinner ng-show="cars.progressing"></circle-spinner>
+            <p>cars.progressing? {{progressing}}</p>-->
+            <br />
 
 
-        <select ng-show="cars.selected.startYears" id="yearSelect" ng-options="y for y in cars.years"
-            ng-model="cars.selected.year" ng-change="cars.getMakes()">
-            {{y}}
-        </select>
-        <select ng-show="cars.selected.startYears" id="makeSelect" ng-options="mak for mak in cars.makes"
-            ng-model="cars.selected.make" ng-change="cars.getModels()" >
-            {{mak}}
-        </select>
+            <select ng-show="cars.selected.startYears" id="yearSelect" ng-options="y for y in cars.years"
+                    ng-model="cars.selected.year" ng-change="cars.getMakes()">
+                {{y}}
+            </select>
+            <select ng-show="cars.selected.startYears" id="makeSelect" ng-options="mak for mak in cars.makes"
+                    ng-model="cars.selected.make" ng-change="cars.getModels()">
+                {{mak}}
+            </select>
 
-        <select ng-hide="cars.selected.startYears" ng-options="mak for mak in cars.makes"
-                ng-model="cars.selected.make" ng-change="cars.getYears()">
-            {{mak}}
-        </select>
-        <select ng-hide="cars.selected.startYears" ng-options="y for y in cars.years" 
-                ng-model="cars.selected.year" ng-change="cars.getModels()">
-            {{y}}
-        </select>
+            <select ng-hide="cars.selected.startYears" ng-options="mak for mak in cars.makes"
+                    ng-model="cars.selected.make" ng-change="cars.getYears()">
+                {{mak}}
+            </select>
+            <select ng-hide="cars.selected.startYears" ng-options="y for y in cars.years"
+                    ng-model="cars.selected.year" ng-change="cars.getModels()">
+                {{y}}
+            </select>
+
+            <select ng-options="mod for mod in cars.models" ng-model="cars.selected.model" ng-change="cars.getTrims()">
+                {{mod}}
+            </select>
+            <select ng-options="t for t in cars.trims" ng-model="cars.selected.trim" ng-change="cars.getCars()">
+                {{t}}
+            </select>
+            <br />
+
+            <table tr-ng-grid="" items="cars.cars" page-items="10">
+                <thead>
+                    <tr>
+                        <th field-name="model_year" display-align="center" display-name="Year"></th>
+                        <th field-name="make_display"></th>
+                        <th field-name="model_name" display-align="center" display-name="Model"></th>
+                        <th field-name="model_trim" display-align="center" display-name="Trim"></th>
+                        <th field-name="engine_power_ps" display-align="center" display-name="Power PS"></th>
+                        <th field-name="engine_num_cyl" display-align="center" display-name="Cylinders"</th>
+                        <th field-name="lkm_city" display-align="center" display-name="MPG City" display-format="lkm2mpg:gridItem"></th>
+                        <th field-name="top_speed_kph" display-align="center" display-name="Top Speed MPH" display-format="kph2mph:gridItem"></th>
+                        <th field-name="zero_to_100_kph" display-align="center" display-name="0 to 60mph secs"></th>
+                        <th field-name="weight_kg" display-align="center" display-name="Weight lbs" display-format="kg2lbs:gridItem"></th>
+                        <th field-name="sold_in_us" display-align="center" display-name="In USA?" display-format="buyInUSA:gridItem"></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><button ng-click="cars.open(gridItem.id)">Details</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <script type="text/ng-template" id="carModal.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        {{cm.car.car.model_year}} {{cm.car.car.make_display}} {{cm.car.car.model_name}}
+                        <button class="pull-right btn btn-default" ng-click="cm.cancel()">X</button>
+                    </h3>
+
+                    '<img src="{{cm.car.image}}" alt="Car Picture" style="width:304px;height:228px;">';
+
+                </div>
+                <div class="modal-body">
+                    <p>Number of recalls: {{cm.car.recalls.Count}}</p>
+
+                    <div ng-repeat="c in cm.car.recalls.Results">
+                        <b> Date: </b> {{c.ReportReceivedDate}}
+                        <b>NTHSA #</b> {{c.NHTSACampaignNumber}} <br />
+                        <b>Component:</b> {{c.Component}} <br />
+
+                        <b>Summary:</b> {{c.Summary}}<br />
+                        <b>Consequence:</b> {{c.Conequence}}<br />
+                        <b>Remedy</b> {{c.Remedy}}<br /><br />
+                     </div>
+                </div>
+
+
+                /* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */
+
                 
+                <div ng-controller="AccordionDemoCtrl">
+                    <script type="text/ng-template" id="group-template.html">
+                        <div class="panel {{panelClass || 'panel-default'}}">
+                            <div class="panel-heading">
+                                <h4 class="panel-title" style="color:#fa39c3">
+                                    <a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" uib-accordion-transclude="heading">
+                                        <span ng-class="{'text-muted': isDisabled}">{{heading}}</span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse" uib-collapse="!isOpen">
+                                <div class="panel-body" style="text-align: right" ng-transclude></div>
+                            </div>
+                        </div>
+                    </script>
 
-        <select ng-options="mod for mod in cars.models" ng-model="cars.selected.model" ng-change="cars.getTrims()">
-            {{mod}}
-        </select>
-        <select ng-options="t for t in cars.trims" ng-model="cars.selected.trim" ng-change="cars.getCars()">
-            {{t}}
-        </select>
-        <br />
-        
-        <table tr-ng-grid="" items="cars.cars" page-items="10">
-            <thead>
-                <tr>
-                    <th field-name="model_year" display-align="center" display-name ="Year"></th>
-                    <th field-name="make_display" ></th>
-                    <th field-name="model_name" display-align="center" display-name ="Model"></th>
-                    <th field-name="model_trim" display-align="center" display-name ="Trim"></th>
-                    <th field-name="engine_power_ps" display-align="center" display-name ="Power PS"></th>
-                    <th field-name="engine_num_cyl" display-align="center" display-name ="Cylinders"</th>
-                    <th field-name="lkm_city" display-align="center" display-name ="MPG City"  display-format="lkm2mpg:gridItem"></th>
-                    <th field-name="top_speed_kph" display-align="center" display-name="Top Speed MPH" display-format="kph2mph:gridItem"></th>
-                    <th field-name="zero_to_100_kph" display-align="center" display-name ="0 to 60mph secs"></th>
-                    <th field-name="weight_kg" display-align="center" display-name ="Weight lbs" display-format="kg2lbs:gridItem"></th>
-                    <th field-name="sold_in_us" display-align="center" display-name ="In USA?" display-format="buyInUSA:gridItem"></th>
+                    <p>
+                        <button type="button" class="btn btn-default btn-sm" ng-click="status.open = !status.open">Toggle last panel</button>
+                        <button type="button" class="btn btn-default btn-sm" ng-click="status.isFirstDisabled = ! status.isFirstDisabled">Enable / Disable first panel</button>
+                    </p>
 
-                </tr>
-                </thead>    
-            <tbody>
-                <tr>
-                    <td><button ng-click="cars.open(gridItem.id)">Details</button></td>
-                </tr>
-            </tbody>
-        </table>
-
-      
-        <script type="text/ng-template" id="carModal.html">
-            <div class="modal-header">
-                <h3 class="modal-title">
-                    {{cm.car.car.model_year}} {{cm.car.car.make_display}} {{cm.car.car.model_name}} 
-                    <button class="pull-right btn btn-default" ng-click="cm.cancel()">X</button>
-                </h3>
-                    
-                '<img src="{{cm.car.image}}" alt="Car Picture" style="width:304px;height:228px;">';
-                    
-            </div>
-            <div class="modal-body">
-                <h2> in the modal</h2>
-
-                <p>Number of recalls {{cm.car.recalls.Count}}</p>
-
-                <!--<div ng-repeat="c in cm.car.recalls.Results">
-                    <div ng-repeat="(key, value) in c">
-                        {{key}} : {{value}}
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="oneAtATime">
+                            Open only one at a time
+                        </label>
                     </div>
-                </div>-->
-
-                <div ng-repeat="c in cm.car.recalls.Results">
-                    <h4 ng-repeat="(key, value) in c" ng-show="key.hasOwnProperty('Component')">
-                        {{key}} : {{value}}
-                    </h4>
+                    <uib-accordion close-others="oneAtATime">
+                        <uib-accordion-group heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+                            This content is straight in the template.
+                        </uib-accordion-group>
+                        <uib-accordion-group heading="{{group.title}}" ng-repeat="group in groups">
+                            {{group.content}}
+                        </uib-accordion-group>
+                        <uib-accordion-group heading="Dynamic Body Content">
+                            <p>The body of the uib-accordion group grows to fit the contents</p>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
+                            <div ng-repeat="item in items">{{item}}</div>
+                        </uib-accordion-group>
+                        <uib-accordion-group heading="Custom template" template-url="group-template.html">
+                            Hello
+                        </uib-accordion-group>
+                        <uib-accordion-group heading="Delete account" panel-class="panel-danger">
+                            <p>Please, to delete your account, click the button below</p>
+                            <button class="btn btn-danger">Delete</button>
+                        </uib-accordion-group>
+                        <uib-accordion-group is-open="status.open">
+                            <uib-accordion-heading>
+                                I can have markup, too! <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                            </uib-accordion-heading>
+                            This is just some content to illustrate fancy headings.
+                        </uib-accordion-group>
+                    </uib-accordion>
                 </div>
 
+                /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
 
-                <!--<div ng-repeat="c in cm.car.recalls.Results">
-                    <h4 ng-repeat="cp in c.Components">
-                        {{key}} : {{value}}
-                    </h4>
-                </div>-->
-
-                <!--<p>cm.cArray[0].Component {{cm.cArray[0].Component}}</p>
-                <div ng-repeat="c in cm.cArray">
-
-                        {{c.Component}}-->
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" ng-click="cm.ok()">OK</button>
-                <button class="btn btn-warning" ng-click="cm.cancel()">Cancel</button>
-            </div>
-        </script>   
         
-    </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="cm.ok()">OK</button>
+                    <button class="btn btn-warning" ng-click="cm.cancel()">Cancel</button>
+                </div>
+            </script>
 
+        </div>
+    </div>
 </body>
 
 <script src="Scripts/jquery.min.js"></script>
 <script src="Scripts/jquery-ui-1.11.4.min.js"></script>
 <script src="Scripts/angular.js"></script>
+<script src="Scripts/angular-animate.min.js"></script>
 <script src="Scripts/angular-ui/ui-bootstrap.min.js"></script>
 <script src="Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+<script src="Scripts/spin.min.js"></script>
+<script src="Scripts/angular-spinner.js"></script>
 <script src="trNgGrid-master/trNgGrid.js"></script>
+<!--<script src="App/parseJson.js"></script>-->
 <script src="App/app.js"></script>
 <script src="App/carSvc.js"></script>
 <script src="App/carFrontEndCtrl.js"></script>
-
+<script src="App/loadingService.js"></script>
 </html>

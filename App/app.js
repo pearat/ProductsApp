@@ -1,1 +1,2 @@
-﻿angular.module('carApp', ['trNgGrid','ui.bootstrap']);
+﻿angular.module('carApp', ['trNgGrid', 'ui.bootstrap', 'ngAnimate', 'angularSpinner']);
+

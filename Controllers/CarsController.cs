@@ -199,7 +199,8 @@ namespace ProductsApp.Controllers
                     return InternalServerError(e);
                 }
             }
-            Recalls = JsonConvert.DeserializeObject(content);
+            // Recalls = JsonConvert.DeserializeObject(content);
+            Recalls = content;
 
             var image = new BingSearchContainer(new Uri("https://api.datamarket.azure.com/Bing/search/"));
 
