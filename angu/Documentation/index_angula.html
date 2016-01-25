@@ -1,0 +1,433 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head lang="en">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>ANGULA</title>
+	<!-- Framework CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+	<!--[if lt IE 8]><link rel="stylesheet" href="assets/blueprint-css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+	<!--<link rel="stylesheet" href="assets/blueprint-css/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,700,600,300' rel='stylesheet' type='text/css'/>
+	<link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,800,700,900' rel='stylesheet' type='text/css'/>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+
+<body>
+	<div class="container">
+	   <div class="col-md-12 documentation">
+       <div class="content-logo"><img src="assets/images/logo3.jpg" alt="" /><h3>AngularJS - Documentation</h3></div>
+
+		<hr>
+		
+		<div class="borderTop">			
+				<p class="prepend-top">
+					<strong>
+					Created: 20/02/2015<br>
+					By: Corsaro<br>
+					</strong>
+				</p>
+			<div class="last">
+				<p class="prepend-top append-0">
+                Thank you for purchasing my theme. </p>
+			</div>
+		</div><!-- end div .borderTop -->
+		
+		<hr>
+	    
+        <h3>General Structure</h3>
+        <p>File management content:</p>
+        <ul>
+          <li>main.js</li>
+          <li>cart.js</li>
+          <li>controller.js</li>
+          <li>store.js</li>
+        </ul>
+		<h3>Angula VIEW</h3>
+        <p>This code you find in the index page</p>
+        <pre>
+            &lt;div ng-include='"templates/header.html"'&gt;&lt;/div&gt;
+            &lt;div class="page {{ pageClass }}" ng-view&gt;&lt;/div&gt;
+            &lt;div ng-include='"templates/footer.html"'&gt;&lt;/div&gt;
+        </pre>
+
+        <p>The “ng-app” attribute associates the page with the Angula module defined in the app.js file.
+        This attribute takes care of the URL routing, view injection, and providing each view with the appropriate controllers.</p>
+        <p>The “ng-view” div marks the place where AngularJS will inject the partial pages that correspond to the routed views. 
+        Recall that our application has partial pages: store.html, about.htm, home.htm etc etc....</p>
+        <br />
+		<h3>main.js routeProvider</h3>
+       
+        <p>this the provider inside the main.js</p>
+
+        <pre>
+        var app = angular.module('angula', [
+          'ngRoute', 'ui.bootstrap', 'ngAnimate', 'ngMaterial'
+        ]);
+
+        /**
+         * Configure the Routes
+         */
+        app.config(['$routeProvider', function ($routeProvider) {
+          $routeProvider
+            // Home
+            .when("/", { templateUrl: "partials/home.html", controller: "HomeCtrl" })
+            .when("/home2", { templateUrl: "partials/home2.html", controller: "HomeCtrl" })
+            .when("/home3", { templateUrl: "partials/home3.html", controller: "HomeCtrl" })
+            .when("/home4", { templateUrl: "partials/home4.html", controller: "HomeCtrl" })
+            .when("/home5", { templateUrl: "partials/home5.html", controller: "HomeCtrl" })
+
+            // About
+            .when("/about", { templateUrl: "partials/about.html", controller: "PageCtrl" })
+            .when("/about2", { templateUrl: "partials/about2.html", controller: "PageCtrl" })
+            .when("/about3", { templateUrl: "partials/about3.html", controller: "PageCtrl" })
+            .when("/about4", { templateUrl: "partials/about4.html", controller: "PageCtrl" })
+            .when("/meet_team", { templateUrl: "partials/meet_team.html", controller: "PageCtrl" })
+
+            //Shop Sound Obj
+            .when("/shop", { templateUrl: "partials/shop/store.html", controller: "storeController_sound" })
+            .when('/products/:productCode', { templateUrl: 'partials/shop/product.html', controller: "storeController_sound" })
+            .when('/cart', { templateUrl: 'partials/shop/shoppingCart.html', controller: "storeController_sound" })
+
+            //Shop Dresses
+            .when("/shop_dresses", { templateUrl: "partials/shop/store_dresses.html", controller: "storeController" })
+            .when('/products_dresses/:productCode', { templateUrl: 'partials/shop/product_dresses.html', controller: "storeController" })
+            .when('/cart_dresses', { templateUrl: 'partials/shop/shoppingCart_dresses.html', controller: "storeController"})
+
+            .when("/faq", {templateUrl: "partials/faq.html", controller: "PageCtrl"})
+            .when("/pricing", {templateUrl: "partials/pricing.html", controller: "PageCtrl"})
+            .when("/services", {templateUrl: "partials/services.html", controller: "PageCtrl"})
+            .when("/contact", {templateUrl: "partials/contact.html", controller: "PageCtrl"})
+            // Blog
+            .when("/blog", {templateUrl: "partials/blog.html", controller: "BlogCtrl"})
+            .when("/blog/post", {templateUrl: "partials/blog_item.html", controller: "BlogCtrl"})
+
+            .when("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"})
+            // else 404
+            .otherwise("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"});
+        }]);
+        </pre>
+        <p>This first block of code defines the storeApp object that represents the application. It contains a routeProvider that specifies which view should be displayed based on the URL.</p>
+        <p>For example, when the URL ends with “/cart”, the app should display the view defined in the “partials/shoppingCart.htm” file. The view should be bound to a controller of type “storeController”.</p>
+        <br />
+        <p>Here is the definition of the “DataService” that provides data shared by all views in the Angular Store application:</p>
+
+        <pre>
+        app.factory("DataService", function () {
+
+            // create store
+            var myStore = new store();
+            var storeDetails = new detailsprod();
+            // create shopping cart
+            var myCart = new shoppingCart("AngularStore");
+
+            // enable PayPal checkout
+            // note: the second parameter identifies the merchant; in order to use the 
+            // shopping cart with PayPal, you have to create a merchant account with 
+            // PayPal. You can do that here:
+            // https://www.paypal.com/webapps/mpp/merchant
+            myCart.addCheckoutParameters("PayPal", "corsaro22-facilitator@tiscali.it");
+
+            // return data object with store and cart
+            return {
+                store: myStore,
+                cart: myCart,
+                detailsprod: storeDetails
+            };
+        });
+        </pre>
+        <br />
+        <p>The service creates a “store” object that contains a list of the products available and a “shoppingCart” object that represents the shopping cart.</p>
+        <p>When the “shoppingCart” object is created, it automatically loads its contents from local storage, so users can add items to the cart, close the application, and continue shopping later on.</p>
+        <br />
+        <p>After creating the cart, the service configures the cart’s checkout parameters. </p>
+        <p>To use the shopping cart with PayPal, you have to create a merchant account with PayPal.</p>
+        <br />
+
+        <h3>controller.js</h3>
+        <p>Once the data service has been created, it can be used by the “storeController” objects that will drive all the views in the application. This is done in the controller.js </p>
+        <pre>
+        'use strict';
+
+        // the storeController contains two objects:
+        // - store: contains the product list
+        // - cart: the shopping cart object
+        // - detailsprod: contains the details product
+        app.controller('storeController', function ($scope, $routeParams, DataService) {
+
+            // get store and cart from service
+            $scope.detailsprod = DataService.detailsprod;
+            $scope.store = DataService.store;
+            $scope.cart = DataService.cart;
+
+            if ($routeParams.productCode != null) {
+                $scope.product = $scope.store.getProduct($routeParams.productCode);
+                $scope.detail = $scope.detailsprod.getDetail($routeParams.productCode);
+            }
+        });
+
+        app.controller('storeController_sound', function ($scope, $routeParams, DataService) {
+
+            // get store and cart from service
+            $scope.detailsprod = DataService.detailsprod;
+            $scope.store = DataService.store;
+            $scope.cart = DataService.cart;
+
+            if ($routeParams.productCode != null) {
+                $scope.product = $scope.store.getProduct_sound($routeParams.productCode);
+                $scope.detail = $scope.detailsprod.getDetail_sound($routeParams.productCode);
+            }
+        });
+        </pre>
+
+        <br />
+        <h3>store.js</h3>
+        <p>The ”store” class is defined in the store.js file.</p>
+        <pre>
+          function store() {
+                this.products = [
+                      { num: 1, code: '001', category: 'Blouses', name: 'Berto G.', src: "product/dresses/1.jpg", src_retro: "product/dresses/1r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 200, discount: '20%', class: 'show-down' },
+                      { num: 2, code: '002', category: 'Shirt', name: 'Rhon Doe', src: "product/dresses/2.jpg", src_retro: "product/dresses/2r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 110, class: 'show-down' },
+                      { num: 3, code: '003', category: 'Blouses', name: 'Sesto Brisi', src: "product/dresses/3.jpg", src_retro: "product/dresses/3r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 68, discount: '10%', class: 'show-up' },
+                      { num: 4, code: '004', category: 'Jeans', name: 'Redo Bag', src: "product/dresses/4.jpg", src_retro: "product/dresses/4r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 134, class: 'show-down' },
+                      { num: 5, code: '005', category: 'Shirt', name: 'Mikore', src: "product/dresses/5.jpg", src_retro: "product/dresses/5r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 350, discount: '50%', class: 'show-up' },
+                      { num: 6, code: '006', category: 'Shirt', name: 'Big Hoddie', src: "product/dresses/6.jpg", src_retro: "product/dresses/6r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 127, class: 'show-down' },
+                      { num: 7, code: '007', category: 'Sweatshirt', name: 'Roberto J.', src: "product/dresses/7.jpg", src_retro: "product/dresses/7r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 500, discount: '30%', class: 'show-up' },
+                      { num: 8, code: '008', category: 'Jeans', name: 'Rigo S.', src: "product/dresses/8.jpg", src_retro: "product/dresses/8r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 346, class: 'show-down' },
+                      { num: 9, code: '009', category: 'Shirt', name: 'Eliteme', src: "product/dresses/9.jpg", src_retro: "product/dresses/9r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 234, discount: '30%', class: 'show-down'}];
+    
+                this.products_sound = [
+                      { num: 1, code: '001s', category: 'Speakers', name: 'Sound G.', src: "product/1.jpg", src_retro: "product/1r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 200, discount: '20%', class: 'show-down' },
+                      { num: 2, code: '002s', category: 'Watches', name: 'Rhon Doe', src: "product/2.jpg", src_retro: "product/2r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 110, class: 'show-down' },
+                      { num: 3, code: '003s', category: 'Speakers', name: 'Patrol SR', src: "product/3.jpg", src_retro: "product/3r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 68, discount: '10%', class: 'show-up' },
+                      { num: 4, code: '004s', category: 'Station', name: 'Redo Bag', src: "product/4.jpg", src_retro: "product/4r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 134, class: 'show-down' },
+                      { num: 5, code: '005s', category: 'Phone', name: 'Mikore', src: "product/5.jpg", src_retro: "product/5r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 350, discount: '50%', class: 'show-up' },
+                      { num: 6, code: '006s', category: 'Station', name: 'Big Hoddie', src: "product/6.jpg", src_retro: "product/6r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 127, class: 'show-down' },
+                      { num: 7, code: '007s', category: 'Watches', name: 'Roberto J.', src: "product/7.jpg", src_retro: "product/7r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 500, discount: '30%', class: 'show-up' },
+                      { num: 8, code: '008s', category: 'Phone', name: 'Rigo S.', src: "product/8.jpg", src_retro: "product/8r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 346, class: 'show-down' },
+                      { num: 9, code: '009s', category: 'Speakers', name: 'Eliteme', src: "product/9.jpg", src_retro: "product/9r.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ', price: 234, discount: '30%', class: 'show-down'}];
+
+            }
+
+            function detailsprod() {
+                this.details = [
+                      { id: '001', material: '100% Polyester', size: { s1: { value: '30' }, s2: { value: '32' }, s3: { value: '34'} }, color: { c1: { value: 'Blue' }, c2: { value: 'Black'} }, color_selected: "Blue", size_selected:"30" },
+                      { id: '002', material: '100% Cotton', size: { s1: { value: 'S' }, s2: { value: 'M' }, s3: { value: 'L' }, s4: { value: 'XL'} }, color: { c1: { value: 'Red' }, c2: { value: 'Black'}}, color_selected: "Red", size_selected:"S" },
+                      { id: '003', material: 'Pelt', size: { s1: { value: '36' }, s2: { value: '37' }, s3: { value: '38'} }, color: { c1: { value: 'Yellow' }, c2: { value: 'Green'} }, color_selected: "Yellow", size_selected: "36" },
+                      { id: '004', material: '30% Cotton, 70% Polyester', size: { s1: { value: '30' }, s2: { value: '32' }, s3: { value: '34'} }, color: { c1: { value: 'Gray' }, c2: { value: 'Black'} }, color_selected: "Gray", size_selected: "30" },
+                      { id: '005', material: '100% Cotton', size: { s1: { value: 'S' }, s2: { value: 'M' }, s3: { value: 'L'} }, color: { c1: { value: 'Red' }, c2: { value: 'Green'} }, color_selected: "Red", size_selected: "S" },
+                      { id: '006', material: '100% Cotton', size: { s1: { value: 'S' }, s2: { value: 'M' }, s3: { value: 'L'} }, color: { c1: { value: 'White' }, c2: { value: 'Black'} }, color_selected: "White", size_selected: "S" },
+                      { id: '007', material: '100% Cotton', size: { s1: { value: 'S' }, s2: { value: 'M' }, s3: { value: 'L'} }, color: { c1: { value: 'Red' }, c2: { value: 'Black'} }, color_selected: "Red", size_selected: "S" },
+                      { id: '008', material: '100% Cotton', size: { s1: { value: '30' }, s2: { value: '32' }, s3: { value: '34'} }, color: { c1: { value: 'Blue' }, c2: { value: 'Black'} }, color_selected: "Blue", size_selected: "30" },
+                      { id: '009', material: '100% Cotton', size: { s1: { value: 'S' }, s2: { value: 'M' }, s3: { value: 'L'} }, color: { c1: { value: 'Red' }, c2: { value: 'Black'} }, color_selected: "Red", size_selected: "S"}];
+   
+                this.details_sound = [
+                      { id: '001s', material: 'Pelt', power: '10-100W', size: '(LxAxP) 194x296x200 mm', weight: '5,5 kg' },
+                      { id: '002s', material: 'Wood', power: '30-140W', size: '(LxAxP) 194x296x200 mm', weight: '5,5 kg' },
+                      { id: '003s', material: 'Pelt', power: '10-150W', size: '(LxAxP) 194x296x200 mm', weight: '5,5 kg' },
+                      { id: '004s', material: 'Metal', power: '40-200W', size: '(LxAxP) 194x296x200 mm', weight: '5,5 kg' },
+                      { id: '005s', material: 'Wood', power: '10-100W', size: '(LxAxP) 194x296x200 mm', weight: '5,5 kg' },
+                      { id: '006s', material: 'Wood', power: '10-150W', size: '(LxAxP) 194x296x200 mm', weight: '5,5 kg' },
+                      { id: '007s', material: 'Metal', power: '10-180W', size: '(LxAxP) 194x296x200 mm', weight: '5,5 kg' },
+                      { id: '008s', material: 'Metal', power: '10-100W', size: '(LxAxP) 194x296x200 mm', weight: '5,5 kg' },
+                      { id: '009s', material: 'Pelt', power: '10-100W', size: '(LxAxP) 194x296x200 mm', weight: '5,5 kg'}];
+            }
+        </pre>
+        <br />
+        <p>It s two type the store because have two shop one for dresses and other for music object, and down other store, with the details product</p>
+        <p>When you use the button add in the cart the shop for dresses no add the size and color this because i setting the shop for two type the product.
+        If you whant add also size and color in the cart need to use the color_selected and size_selected this change every-time you chose the new size or color.</p>
+        <br />
+
+        <h3>shoppingCart.js</h3>
+        <p>It is defined in the cart.js file and implements an object model as follows: shoppingCart(cartName) This is the constructor.
+        The cartName parameter identifies the cart when saving it to or loading it from local storage.</p>
+        <p>addItem(): This method adds or removes items from the cart.</p>
+        <p>clearItems(): This method clears the cart by removing all items. It also saves the empty cart to local storage.</p>
+        <p>getTotalCount(): This method gets the quantity of items or a given type or for all items in the cart.</p>
+        <p>getTotalPrice(): This method gets the total price (unit price * quantity) for one or all items in the cart.</p>
+        <p>getTotalCount(): This method gets the quantity of items or a given type or for all items in the cart.</p>
+        <p>checkout([serviceName], [clearCart]): This method initiates a checkout transaction by building a form object and submitting it to the specified payment provider.</p>
+
+        <h3>The store.html partial view is implemented as follows:</h3>
+        <br />
+        <img class="img-prod" src="assets/images/store_code.jpg" alt="" /><br /><br />
+
+        <p>The body of the page uses an ng-repeat attribute to show product and description, this ng-repeat go in pageItem for management the group of page this method it s in this controller "AdminController" inside store.js.</p>
+
+
+        <h3>Classic Porfolio Image</h3>
+
+        <p>This is the data base for the porfolio with url image, description prod, etc...</p>
+
+        <pre>     
+            app.controller("dataImagesWork", function ($scope) {
+            $scope.images_work = [
+                      { num: 1, code: 'APL', category: 'mac', name: 'Nature Pro', src: "1.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
+                      { num: 2, code: 'AVC', category: 'ipad', name: 'Boat NC', src: "2.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
+                      { num: 3, code: 'BAN', category: 'phone', name: 'Creative', src: "3.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
+                      { num: 4, code: 'CTP', category: 'mac', name: 'Room Pro', src: "4.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
+                      { num: 5, code: 'FIG', category: 'ipad', name: 'Office Airs', src: "5.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
+                      { num: 6, code: 'FIG', category: 'sound', name: 'Dancing', src: "6.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. '}];
+
+            });
+        </pre>
+
+        <p>For create the portfolio need only to call and repeat what you have inside the images_work in this mode ng-repeat="product in images_work | filter:myFilter", and dinamicaly crete a portfolio</p>
+        <p>If you need to change the effect for the filter need only to change the css, this part:</p>
+        <pre>
+           .my-gallery-animation.ng-enter, 
+            .my-gallery-animation.ng-leave { 
+                -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+                -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+                -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+                -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+                transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+                position: relative;
+                display: block;
+            } 
+
+            .my-gallery-animation.ng-leave.ng-leave-active,
+            .my-gallery-animation.ng-enter {
+                -webkit-transform: scale(0);
+                -moz-transform: scale(0);
+                -ms-transform: scale(0);
+                -o-transform: scale(0);
+                transform: scale(0);
+                opacity: 0;
+            }        
+
+            .my-gallery-animation.ng-enter.ng-enter-active,
+            .my-gallery-animation.ng-leave {
+                -webkit-transform: scale(1);
+                -moz-transform: scale(1);
+                -ms-transform: scale(1);
+                -o-transform: scale(1);
+                transform: scale(1);
+                opacity: 1;
+            }
+        
+        </pre>
+        <br />
+        <h3>Monitor Animation</h3>
+
+        <p>The monitor you find in the home2 for animated use this controller inside the main.js:</p>
+        <pre>
+          app.controller('HomeCtrl', function ($scope, $interval) {
+
+                 var duration = 1600, steps = 3, step = 1;
+
+                 $scope.customAttributeValue = step;
+
+                var start = $interval(function () {
+                    if ($scope.customAttributeValue < steps) {
+                        $scope.customAttributeValue += step;
+                    }
+                    else {
+                        $scope.customAttributeValue = step;
+                     }
+                }, duration);
+
+            });
+        </pre>
+        <br />
+        <h3>Services tabs</h3>
+        <p>The tabs inside the page services.html use this control, for more information go in the page boostrap and angular</p>
+
+        <pre>
+        app.controller('TabsDemoCtrl', function ($scope, $window) {
+            $scope.tabs = [
+            { title: 'Dynamic Title 1', content: 'Dynamic content 1' },
+            { title: 'Dynamic Title 2', content: 'Dynamic content 2', disabled: true }
+          ];
+
+            $scope.alertMe = function () {
+                setTimeout(function () {
+                    $window.alert('You\'ve selected the alert tab!');
+                });
+            };
+        });
+        
+        </pre>
+        <br />
+        <h3>FAQ Accordion</h3>
+        <p>This is the controller accordion</p>
+
+        <pre>
+        app.controller('AccordionDemoCtrl', function ($scope) {
+            $scope.oneAtATime = true;
+
+            $scope.isopen = {
+                first: true,
+                second: true,
+                three: true,
+                four: true,
+                five: true,
+                six: true,
+                seven: true
+            }
+            $scope.icon = {
+                "false": 'fa fa-plus',
+                "true": 'fa fa-minus'
+            }
+
+            $scope.status = {
+                isFirstOpen: true,
+                isFirstDisabled: false
+            };
+        });
+        
+        </pre>
+        <br />
+        <h3>SkillLinear about3</h3>
+        <p>This is the skill to use the material design from angular</p><br />
+        <img class="img-prod" src="assets/images/skill_material.jpg" alt="" /><br /><br />
+         <p>Use this code in the page</p>
+        <img class="img-prod" src="assets/images/skill_material_code.jpg" alt="" /><br /><br />
+        <p>Use this controller for activate the skill from main.js</p>
+        <pre>
+        app.controller('SkillLinear', ['$scope', '$interval', function($scope, $interval) {
+            $scope.mode = 'query';
+            $scope.determinateValue1 =  $scope.determinateValue2 =  $scope.determinateValue3 = $scope.determinateValue4 = $scope.determinateValue5 =  30;
+            $scope.determinateValue1a = $scope.determinateValue2a =  $scope.determinateValue3a = $scope.determinateValue4a =  $scope.determinateValue5a = 30;
+
+            $interval(function() {
+              $scope.determinateValue1 = $scope.determinateValue2 = $scope.determinateValue3 = $scope.determinateValue4 = $scope.determinateValue5 += 1;
+              $scope.determinateValue1a =  $scope.determinateValue2a = $scope.determinateValue3a = $scope.determinateValue4a = $scope.determinateValue5a += 1.5;
+
+              if ($scope.determinateValue1 > 70) {
+                $scope.determinateValue1 = $scope.determinateValue1a = 70;
+              }
+              if ($scope.determinateValue2 > 83) {
+                $scope.determinateValue2 = $scope.determinateValue2a = 83;
+              }
+              if ($scope.determinateValue3 > 56) {
+                $scope.determinateValue3 = $scope.determinateValue3a = 56;
+              }
+              if ($scope.determinateValue4 > 65) {
+                $scope.determinateValue4 = $scope.determinateValue4a = 65;
+              }
+              if ($scope.determinateValue5 > 95) {
+                $scope.determinateValue5 = $scope.determinateValue5a = 95;
+              }
+            }, 100, 0, true);
+            $interval(function() {
+              $scope.mode = ($scope.mode == 'query' ? 'determinate' : 'query');
+            }, 7200, 0, true);
+          }]);
+        
+        </pre>
+		<hr>
+		
+        
+
+		<p>Once again, thank you so much for purchasing this theme. As I said at the beginning, I'd be glad to help you if you have any questions relating to this theme. No guarantees, but I'll do my best to assist. If you have a more general question relating to the themes on ThemeForest, you might consider visiting the forums and asking your question in the "Item Discussion" section.</p> 
+		
+		<p class="append-bottom alt large"><strong>Corsaro</strong></p>
+		
+		
+		<hr class="space">
+        </div>
+	</div><!-- end div .container -->
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿body {
+﻿/*body {
     background: #fff;
     color: #505050;
     font: 14px 'Segoe UI', tahoma, arial, helvetica, sans-serif;
@@ -96,7 +96,7 @@ a {
 
     a:hover {
         text-decoration: underline;
-    }
+    }*/
     
 .spinner {
   position: relative;
@@ -117,4 +117,26 @@ a {
  height: 100px;
  display: none;
  background-image: url('/img/ajax-loader.gif');
+}
+
+.selectLegend {
+    
+    margin: auto;
+    width: 80%;
+    text-align: center;
+}
+
+/*table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;  
+}
+
+th, td {
+    padding: 5px;
+}*/
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
 }

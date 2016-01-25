@@ -87,7 +87,7 @@
                 make: '',
                 model: '',
                 trim: '',
-                sort: '3',
+                sort: '',
                 startYears: true,
                 progressing: true
             }
@@ -188,62 +188,110 @@
     }]);
 
 
-    app.controller('carModalCtrl', ['$uibModalInstance', 'car', function ($uibModalInstance, car) {
-        var scope = this;
-        scope.n = 0;
-        scope.car = car;
-        var ct = car.recalls.Count;
-        console.log('car.recalls.Count ' + ct);
-        var jsonDate = dateString = '';
-        for (i = 0; i < ct; i++) {
-            jsonDate = $.trim(car.recalls.Results[i].ReportReceivedDate);
-            dateString = parseJsonDate(jsonDate);
-            // console.log('*** jsonDate:>' + jsonDate + '<:***:>' + dateString + '<:***');
-            car.recalls.Results[i].ReportReceivedDate = dateString;
-        }
-        scope.ok = function () {
-            $uibModalInstance.close();
-        };
-        scope.cancel = function () {
-            $uibModalInstance.dismiss();
-        };
+    app.filter('divideBy', function () {
+            return function (input, divisor) {
+                input = input || 0;
+                if (input == 0) return '';
+                divisor = divisor || 1;
+                return Math.round(input / divisor);
+            }
+        })
+        .filter('multiplyBy', function () {
+            return function (input, operand) {
+                input = input || 0;
+                if (input == 0) return '';
+                operand = operand || 1;
+                return Math.round(input * operand);
+            }
+        })
+        .filter('yesFor1', function () {
+            return function (input) {
+                if (input = 1) {
+                    return 'Yes';
+                } else {
+                    return 'No';
+                }
+            }
+        })
+        .filter('inverseX', function () {
+            return function (input, x) {
+                if (input == '' || input == 1) return '';
+                x = x || 1;
+                return Math.round(x / input);
+            }
+        })
+        .controller('carModalCtrl', ['$uibModalInstance', 'car', function ($uibModalInstance, car) {
+            var scope = this;
+            scope.n = 0;
+            scope.car = car;
+            var ct = car.recalls.Count;
+            if (car.car.make_display == '')
+                car.car.make_display = car.car.make;
+            console.log('car.recalls.Count ' + ct);
+            //if (ct > 1) {
+            //    var arr = [];
+            //    for (i = 0; i < ct; i++)
+            //        arr[i] = car.recalls.Results[i];
+            //    arr.sort(arr[i].ReportReceivedDate);
+            //    car.recalls.Results = arr;
+            //}
+            var jsonDate = dateString = '';
+            for (i = 0; i < ct; i++) {
+                jsonDate = $.trim(car.recalls.Results[i].ReportReceivedDate);
+                dateString = parseJsonDate(jsonDate);
+                // console.log('*** jsonDate:>' + jsonDate + '<:***:>' + dateString + '<:***');
+                car.recalls.Results[i].ReportReceivedDate = dateString;
+            }
+            scope.ok = function () {
+                $uibModalInstance.close();
+            };
+            scope.cancel = function () {
+                $uibModalInstance.dismiss();
+            };
+
+
+        /* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */
+
+            scope.oneAtATime = true;
+
+            scope.groups = [
+            {
+                title: 'Dynamic Group Header - 1',
+                content: 'Dynamic Group Body - 1'
+            },
+            {
+                title: 'Dynamic Group Header - 2',
+                content: 'Dynamic Group Body - 2'
+            }
+            ];
+
+            scope.items = ['Item 1', 'Item 2', 'Item 3'];
+
+            scope.addItem = function () {
+                var newItemNo = scope.items.length + 1;
+                scope.items.push('Item ' + newItemNo);
+            };
+
+            scope.status = {
+                isFirstOpen: true,
+                isFirstDisabled: false
+            };
+        
+        /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
+
     }]);
 
 
-    
-    /* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */
-
-    app.controller('AccordionDemoCtrl', function ($scope) {
-        $scope.oneAtATime = true;
-
-        $scope.groups = [
-        {
-            title: 'Dynamic Group Header - 1',
-            content: 'Dynamic Group Body - 1'
-        },
-        {
-            title: 'Dynamic Group Header - 2',
-            content: 'Dynamic Group Body - 2'
-        }
-        ];
-
-        $scope.items = ['Item 1', 'Item 2', 'Item 3'];
-
-        $scope.addItem = function() {
-        var newItemNo = $scope.items.length + 1;
-        $scope.items.push('Item ' + newItemNo);
-        };
-
-        $scope.status = {
-        isFirstOpen: true,
-        isFirstDisabled: false
-        };
-    });
-
-    /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
-
 })();
 
+
+
+
+//function SortByDate(a, b) {
+//    var aDate = a.ReportReceivedDate;
+//    var bDate = b.ReportReceivedDate;
+//    return ((aDate < bDate) ? -1 : ((aDate > bDate) ? 1 : 0));
+//}
 
 
 function parseJsonDate(jsonDateString) {
@@ -259,4 +307,3 @@ function parseJsonDate(jsonDateString) {
     var calendarDate = date + ' ' + month + ' ' + year;
     return calendarDate;
 }
-

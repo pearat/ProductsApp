@@ -19,8 +19,13 @@ namespace ProductsApp.Controllers
     public class CarsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
         /// <summary>
-        /// Selected is an object 
+        /// Selected is an object with 5 elements used to access the Cars database.
+        /// 1: year = model year; 2: make = manufacturer's name, e.g., ford; 
+        /// 3: model = model of the car, e.g., escort; 4: trim = body styling, e.g., ST
+        /// 5: sort = default (no value given) descending by date, 
+        /// the rest are ascending 1 by make, 2 by model, 3 by trim.
         /// </summary>
         public class Selected
         {
@@ -124,7 +129,14 @@ namespace ProductsApp.Controllers
         }
 
 
-
+        /// <summary>
+        /// This API returns a list of cars records for based on up to 4 parameters and a sort code (all optional)  
+        /// through a PUT request.  Inside the "selected" object: year is a 4 digit number, e.g.,  2011; make is the 
+        /// manufacturer's name, e.g., honda model is the type of car, e.g., accord; trim is its configuration, e.g., 
+        /// EX-L 2dr Coupe (2.4L 4cyl CVT) sort, default (or no value given) descending by date, 1 by make, 2 by model, 3 by trim.
+        /// </summary>
+        /// <param name="selected"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("GetCars")]
         public IHttpActionResult GetCars(Selected selected)
@@ -146,7 +158,7 @@ namespace ProductsApp.Controllers
         /// This API returns a list of cars records for based on up to 4 parameters and a sort code (all optional)  
         /// through a GET request.  Year is a 4 digit number, e.g.,  2011; make is the manufacturer's name, e.g., honda
         /// model is the type of car, e.g., accord; trim is its configuration, e.g., EX-L 2dr Coupe (2.4L 4cyl CVT)
-        /// sort, default by date, 1 by make, 2 by model.
+        /// sort, default (or no value given) descending by date, 1 by make, 2 by model, 3 by trim.
         /// </summary>
         /// <param name="year"></param>
         /// <param name="make"></param>
