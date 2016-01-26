@@ -495,28 +495,86 @@
             the rest are ascending 1 by make, 2 by model, 3 by trim.
             </summary>
         </member>
+        <member name="T:ProductsApp.Controllers.CarsController.CarId">
+            <summary>
+            CarId is an object containing the element "id" of type int which refers to the 
+            identification number of the car to be searched for in the cars database.
+            </summary>
+        </member>
+        <member name="M:ProductsApp.Controllers.CarsController.GenerateYears">
+            <summary>
+            GenerateYears lists of years that are in the Car Finder database.  This list is used by
+            the Car Finder App to populate the "Search by Years" drop-down list.
+            Since these change infrequently, the values are currently hard-coded (1936-2015), 
+            but in future versions they will be passed in as parameters.
+            </summary>
+            <returns>
+            List of strings
+            </returns>
+        </member>
+        <member name="M:ProductsApp.Controllers.CarsController.GetModelYears(ProductsApp.Controllers.CarsController.Selected)">
+            <summary>
+            GetModelYears returns a list of the years available for a given car make 
+            specified in the selected object.
+            </summary>
+            <param name="selected"></param>
+            <returns>List of strings
+            </returns>
+        </member>
         <member name="M:ProductsApp.Controllers.CarsController.GetCarMakes4Yr(ProductsApp.Controllers.CarsController.Selected)">
             <summary>
-            This API returns a list of the distinct car makes for the year in question
+            GetMakes4Yr lists distinct car makes for the year given in the selected object.
             For example, for 2001 it returns ... bugatti, buick, cadilac, chevrolet...
             </summary>
-            <param name="year"></param>
-            <returns></returns>
+            <param name="selected"></param>
+            <returns>
+            List of type string
+            </returns>
+        </member>
+        <member name="M:ProductsApp.Controllers.CarsController.GetAllMakes(ProductsApp.Controllers.CarsController.Selected)">
+            <summary>
+            GetAllMakes returns a list of distinct car makes (or manufacturers) in the database
+            </summary>
+            <param name="selected"></param>
+            <returns>
+            List of type string
+            </returns>
+        </member>
+        <member name="M:ProductsApp.Controllers.CarsController.GetModels(ProductsApp.Controllers.CarsController.Selected)">
+            <summary>
+            GetModels provides the models for a given year and make that is specified in the "selected" object.
+            </summary>
+            <param name="selected"></param>
+            <returns>
+            List of type string
+            </returns>
+        </member>
+        <member name="M:ProductsApp.Controllers.CarsController.GetTrims(ProductsApp.Controllers.CarsController.Selected)">
+            <summary>
+            GetTrims provides the trims for a given year, make and model that is specified in the "selected" object.
+            </summary>
+            <param name="selected"></param>
+            <returns>
+            List of type string
+            </returns>
         </member>
         <member name="M:ProductsApp.Controllers.CarsController.GetCars(ProductsApp.Controllers.CarsController.Selected)">
             <summary>
-            This API returns a list of cars records for based on up to 4 parameters and a sort code (all optional)  
-            through a PUT request.  Inside the "selected" object: year is a 4 digit number, e.g.,  2011; make is the 
-            manufacturer's name, e.g., honda model is the type of car, e.g., accord; trim is its configuration, e.g., 
-            EX-L 2dr Coupe (2.4L 4cyl CVT) sort, default (or no value given) descending by date, 1 by make, 2 by model, 3 by trim.
+            GetCars returns a list of cars based on up to 4 parameters and a sort code, all of which are optional 
+            through a PUT request.  (CAUTION: calling this API without any parameter returns the entire database!)
+            Inside the "selected" object: year is a 4 digit number, e.g.,  2011; make is the manufacturer's name, 
+            e.g., honda; model is the type of car, e.g., accord; trim is its configuration, e.g., EX-L 2dr Coupe;
+            sort, by default (or if blank) is descending by date, 1 by make, 2 by model, 3 by trim.
             </summary>
             <param name="selected"></param>
-            <returns></returns>
+            <returns>
+            JSON object of type Car consisting of approx 30 characteristics of each vehicle
+            </returns>
         </member>
         <member name="M:ProductsApp.Controllers.CarsController.GetCars4YrMakeModelTrim(System.String,System.String,System.String,System.String,System.String)">
             <summary>
-            This API returns a list of cars records for based on up to 4 parameters and a sort code (all optional)  
-            through a GET request.  Year is a 4 digit number, e.g.,  2011; make is the manufacturer's name, e.g., honda
+            This API returns a list of cars based on up to 4 parameters and a sort code (all optional) via a GET 
+            request.  Year is a 4 digit number, e.g.,  2011; make is the manufacturer's name, e.g., honda
             model is the type of car, e.g., accord; trim is its configuration, e.g., EX-L 2dr Coupe (2.4L 4cyl CVT)
             sort, default (or no value given) descending by date, 1 by make, 2 by model, 3 by trim.
             </summary>
@@ -525,24 +583,41 @@
             <param name="model"></param>
             <param name="trim"></param>
             <param name="sort"></param>
-            <returns></returns>
+            <returns>
+            List of "car" objects
+            </returns>
         </member>
         <member name="M:ProductsApp.Controllers.CarsController.GetDetails(ProductsApp.Controllers.CarsController.CarId)">
             <summary>
-            Use Post 
+            GetDetails uses the Id from the CarFinders database to return a compound object containing 
+            (1) a car object with vehicle details, (2) a list of recall information from the Natl Highway Traffic 
+            Safety Administration (NHTSA) along with (3) links to images, if available.
             </summary>
-            <param name="selected object with year, make, model, trim and (sort -- not used)objectwithyear,make,model,trimand(sort--notused) "></param>
+            <param name="selected">
+            </param>
             <returns>
-            JSON compound ojbect of car and one or more complaint records and photos
+            JSON compound ojbect of Car and one or more Image and Recall records
             </returns>
         </member>
         <member name="M:ProductsApp.Controllers.CarsController.getCar(System.Int32)">
             <summary>
-            This API takes an Id number from the CarFinders database and returns a list of recall from the 
-            Natl Highway Traffic Safety Administration (NHTSA), if any, along with links to images, if available.
+            CarRecallPics uses the Id from the CarFinders database to return a compound object containing 
+            (1) a car object with vehicle details, (2) a list of recall information from the Natl Highway Traffic 
+            Safety Administration (NHTSA) along with (3) links to images, if available.
             </summary>
-            <param name="Id"></param>
-            <returns></returns>
+            <param name="Id of type integeroftypeinteger"></param>
+            <returns>
+            JSON compound ojbect of Car and one or more Image and Recall records
+            </returns>
+        </member>
+        <member name="T:ProductsApp.Controllers.UrlCtrl">
+            <summary>
+            UrlCtrl tests whether the given path leads to a valid and active URL
+            </summary>
+            <param name="path"></param>
+            <returns>
+            result (boolean: true if valid, false otherwise)
+            </returns>
         </member>
         <member name="T:ProductsApp.Models.CarMake">
             <summary>

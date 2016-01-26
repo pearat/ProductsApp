@@ -1,0 +1,3 @@
+C:\Users\Tim\documents\visual studio 2015\Projects\ProductsApp\ProductsApp\obj\Release\ProductsApp.csprojResolveAssemblyReference.cache
+C:\Users\Tim\documents\visual studio 2015\Projects\ProductsApp\ProductsApp\obj\Release\ProductsApp.Migrations.initialCreate.resources
+C:\Users\Tim\documents\visual studio 2015\Projects\ProductsApp\ProductsApp\obj\Release\ProductsApp.csproj.GenerateResource.Cache

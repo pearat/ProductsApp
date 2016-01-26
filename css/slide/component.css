@@ -121,10 +121,12 @@
 	transition: transform 0.3s;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
+    
 }
 
 .boxgallery > nav i::before,
 .boxgallery > nav i::after {
+    display: none;
 	z-index: 100;
 	height: 0;
 	background: #fff;

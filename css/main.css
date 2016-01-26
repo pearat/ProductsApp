@@ -1858,7 +1858,8 @@ figure.effect-hera:hover p i:empty {
 *********************************************************************************************/
 
 .about-top-img {
-	background-image:url('http://placehold.it/1920x1080');
+	/*background-image:url('http://placehold.it/1920x1080');*/
+    background-image:url('../img/audi-motorsport-race-cars-at-le_1920x1080_396-hd.jpg');
 	background-repeat:no-repeat !important;
 	background-attachment: fixed;    
 	-webkit-background-size: cover;
@@ -4310,7 +4311,8 @@ to {
 }
 
 .about2-top-img {
-	background-image:url('http://placehold.it/1920x1080');
+	/*background-image:url('http://placehold.it/1920x1080');*/
+    background-image:url('../../img/vw.jpg');
 	background-repeat:no-repeat !important;
 	background-attachment: fixed;    
 	-webkit-background-size: cover;

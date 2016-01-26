@@ -246,18 +246,19 @@
                 </uib-accordion-group>
 
 
-                <uib-accordion-group heading="Recalls: {{cm.car.recalls.Count}} " panel-class="panel-danger">
-                    <div ng-repeat="c in cm.car.recalls.Results">
-                        <b> Date: </b> {{c.ReportReceivedDate}}
-                        <b>NTHSA #</b> {{c.NHTSACampaignNumber}} <br />
-                        <b>Component:</b> {{c.Component}} <br />
+                <!--<uib-accordion-group heading="Recalls: {{cm.car.recalls.Count}} " panel-class="panel-info">-->
+                <uib-accordion-group heading="Recalls: {{cm.car.recalls.Count}}">
+                        <div ng-repeat="c in cm.car.recalls.Results">
+                            <b> Date: </b> {{c.ReportReceivedDate}}
+                            <b>NTHSA #</b> {{c.NHTSACampaignNumber}} <br />
+                            <b>Component:</b> {{c.Component}} <br />
 
-                        <b>Summary:</b> {{c.Summary}}<br />
-                        <b>Consequence:</b> {{c.Conequence}}<br />
-                        <b>Remedy</b> {{c.Remedy}}<br /><br />
-                    </div>
+                            <b>Summary:</b> {{c.Summary}}<br />
+                            <b>Consequence:</b> {{c.Conequence}}<br />
+                            <b>Remedy</b> {{c.Remedy}}<br /><br />
+                        </div>
 
-                </uib-accordion-group>
+                    </uib-accordion-group>
 
             </uib-accordion>
 

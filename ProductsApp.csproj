@@ -203,6 +203,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\DefaultController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -263,7 +264,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="about.html" />
-    <Content Include="about2.html" />
+    <Content Include="angu\html\about2.html" />
     <Content Include="accordion.html" />
     <Content Include="angu\angu_new\assets\paddle_next_999.png" />
     <Content Include="angu\angu_new\assets\paddle_next_fff.png" />
@@ -545,7 +546,7 @@
     <Content Include="angu\Documentation\index_angula.html" />
     <Content Include="angu\html\404.html" />
     <Content Include="angu\html\about.html" />
-    <Content Include="angu\html\about2.html" />
+    <Content Include="CarFindAbout.html" />
     <Content Include="angu\html\about3.html" />
     <Content Include="angu\html\about4.html" />
     <Content Include="angu\html\assets\paddle_next_999.png" />
@@ -761,6 +762,23 @@
     <Content Include="angu\html\img\4.jpg" />
     <Content Include="angu\html\img\arrow-bg-1.png" />
     <Content Include="angu\html\img\arrow-bg-2.png" />
+    <Content Include="carFindAboutOld.html" />
+    <Content Include="img\logos\Angula-Logo.jpg" />
+    <Content Include="img\logos\angularjs-logo.png" />
+    <Content Include="img\logos\AngularJs.png" />
+    <Content Include="img\logos\css3.svg" />
+    <Content Include="img\logos\HTML5_Logo.png" />
+    <Content Include="img\logos\IzendaWebLogos.png" />
+    <Content Include="img\logos\jQurery.gif" />
+    <Content Include="img\logos\js_logo.png" />
+    <Content Include="img\logos\logo-css.png" />
+    <Content Include="img\logos\logo.jpg" />
+    <Content Include="img\logos\logo.png" />
+    <Content Include="img\logos\Angula_big.png" />
+    <Content Include="img\logos\SQL-Server-Logo-transparent-300x247.png" />
+    <Content Include="img\logos\tlogo.png" />
+    <Content Include="img\logos\UI_Shield_Bootstrap.png" />
+    <Content Include="index.html" />
     <Content Include="carFindNew - Copy.html" />
     <Content Include="carFindNew.html" />
     <Content Include="contact.html" />
@@ -793,10 +811,9 @@
     <Content Include="img\audi-motorsport-race-cars-at-le_1920x1080_396-hd.jpg" />
     <Content Include="img\cars-top_00243796.jpg" />
     <Content Include="img\ford_mustang__1920x1080.jpg" />
-    <Content Include="img\tlogo.png" />
     <Content Include="img\Toyota-Land-Cruiser-1990.jpg" />
-    <Content Include="carFindAngula.html" />
-    <Content Include="index.html" />
+    <Content Include="carFindDB.html" />
+    <Content Include="OldIndex.html" />
     <Content Include="angu\html\js\app.js" />
     <Content Include="angu\html\js\bootstrap.min.js" />
     <Content Include="angu\html\js\gallery\jquery.easing.1.3.js" />
@@ -1836,6 +1853,8 @@
     <Content Include="css\minislide\fonts\flexslider-icon.eot" />
     <Content Include="css\minislide\fonts\flexslider-icon.ttf" />
     <Content Include="css\minislide\fonts\flexslider-icon.woff" />
+    <None Include="Properties\PublishProfiles\CarFinderTGP - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\CarFinderTGP - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
     <Content Include="Scripts\jquery-2.2.0.min.js" />
@@ -1877,6 +1896,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="NewFolder1\" />
+    <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

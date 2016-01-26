@@ -158,7 +158,8 @@
                 })
             };
     
-            scope.changeSearchOrder = function () {
+            scope.changeSearchOrder = function (byYear) {
+                scope.selected.startYears = byYear;
                 //var saveStart = scope.selected.startYears;
                 //$('input[name=startYears]').val([saveStart]);    
                 scope.years = [];
