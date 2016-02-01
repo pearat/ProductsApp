@@ -763,12 +763,14 @@
     <Content Include="angu\html\img\arrow-bg-1.png" />
     <Content Include="angu\html\img\arrow-bg-2.png" />
     <Content Include="carFindAboutOld.html" />
+    <Content Include="img\Chevrolet-Cruze-Wagon-2012.jpg" />
     <Content Include="img\logos\Angula-Logo.jpg" />
     <Content Include="img\logos\angularjs-logo.png" />
     <Content Include="img\logos\AngularJs.png" />
     <Content Include="img\logos\css3.svg" />
     <Content Include="img\logos\HTML5_Logo.png" />
     <Content Include="img\logos\IzendaWebLogos.png" />
+    <Content Include="img\logos\jQueryNgUI.png" />
     <Content Include="img\logos\jQurery.gif" />
     <Content Include="img\logos\js_logo.png" />
     <Content Include="img\logos\logo-css.png" />
@@ -776,6 +778,7 @@
     <Content Include="img\logos\logo.png" />
     <Content Include="img\logos\Angula_big.png" />
     <Content Include="img\logos\SQL-Server-Logo-transparent-300x247.png" />
+    <Content Include="img\logos\SQLS-Angula.png" />
     <Content Include="img\logos\tlogo.png" />
     <Content Include="img\logos\UI_Shield_Bootstrap.png" />
     <Content Include="index.html" />
@@ -1887,7 +1890,9 @@
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
