@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;   
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace ProductsApp.Controllers
@@ -243,9 +243,11 @@ namespace ProductsApp.Controllers
         {
             HttpResponseMessage response;
             string content = "";
+            var j = id.id;
             var Car = db.Cars.Find(id.id);
-            dynamic Recalls;
+            dynamic Recalls = null; 
             var Image = "";
+           
 
             using (var client = new HttpClient())
             {
@@ -256,25 +258,78 @@ namespace ProductsApp.Controllers
                                                                                     "/make/" + Car.make +
                                                                                     "/model/" + Car.model_name + "?format=json");
                     content = await response.Content.ReadAsStringAsync();
+                    Recalls = content;
                 }
                 catch (Exception e)
                 {
-                    return InternalServerError(e);
+                    Console.WriteLine("NHTSA GetAsync error: {0}", e);
+                    Recalls = null;
+                    // return InternalServerError(e);
                 }
             }
             // Recalls = JsonConvert.DeserializeObject(content);
-            Recalls = content;
 
-            var image = new BingSearchContainer(new Uri("https://api.datamarket.azure.com/Bing/search/"));
+
+            var image = new BingSearchContainer(new Uri("https://api.datamarket.azure.com/Bing/search/v1/image"));
 
             image.Credentials = new NetworkCredential("accountKey", "uSZdhD53NSOfNv3g0J1hzgObRqsxmFK8iZXUQ3Y2My0");   //"dwmFt1J2rM45AQXkGTk4ebfcVLNcytTxGMHK6dgMreg"
-            var marketData = image.Composite(
-                "image",
-                    Car.model_year + " " + Car.make + " " + Car.model_name + " " + Car.model_trim,
-                    null, null, null, null, null, null, null, null, null, null, null, null, null
-                    ).Execute();
 
-            Image = marketData.First().Image.First().MediaUrl;
+
+            try
+            {
+                var marketData = image.Composite("image", Car.model_year + " " + Car.make + " " + Car.model_name + " " + Car.model_trim,
+                null, null, null, null, null, null, null, null, null, null, null, null, null).Execute();
+                //Image = marketData.First().Image.First().MediaUrl;
+
+                //var Images = marketData?.FirstOrDefault()?.Image;
+                if (marketData != null)
+                {
+                    var Images = marketData?.FirstOrDefault()?.Image;
+                    //var mk = marketData?.First();
+                    //var Images = mk.Image;
+                    //int imgCnt = Images.Count();
+                    foreach (var Img in Images)
+                    {
+                        if (UrlCtrl.IsUrl(Img.MediaUrl))
+                        {
+                            Image = Img.MediaUrl;
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+                else
+                {
+                    Image = "";
+                }
+            }
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError &&
+                    ex.Response != null)
+                {
+                    var resp = (HttpWebResponse)ex.Response;
+                    if (resp.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        Image = null;
+                        Console.WriteLine("Inside GetDetails, cannot find images: " + resp);
+                    }
+                    else
+                    {
+                        Image = null;
+                        Console.WriteLine("Inside GetDetails, error: " + resp);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Inside GetDetails, other error response: " + ex.Response);
+                    Image = null;
+                }
+            }
+
             return Ok(new { car = Car, recalls = Recalls, image = Image });
 
         }
@@ -338,7 +393,7 @@ namespace ProductsApp.Controllers
                     {
                         continue;
                     }
-               }    
+                }
             }
             catch (Exception e)
             {
@@ -357,32 +412,32 @@ namespace ProductsApp.Controllers
     /// </returns>
     [Route("IsUrl")]
     public static class UrlCtrl
+    {
+        public static bool IsUrl(string path)
         {
-            public static bool IsUrl(string path)
-            {
-                HttpWebResponse response = null;
-                var request = (HttpWebRequest)WebRequest.Create(path);
-                request.Method = "HEAD";
-                bool result = true;
+            HttpWebResponse response = null;
+            var request = (HttpWebRequest)WebRequest.Create(path);
+            request.Method = "HEAD";
+            bool result = true;
 
-                try
-                {
-                    response = (HttpWebResponse)request.GetResponse();
-                }
-                catch (WebException ex)
-                {
-                    /* thrown in the status of the response is not '200 OK' */
-                    result = false;
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Close();
-                    }
-                }
-                return result;
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
             }
+            catch (WebException ex)
+            {
+                /* thrown in the status of the response is not '200 OK' */
+                result = false;
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+            return result;
         }
-    
+    }
+
 }

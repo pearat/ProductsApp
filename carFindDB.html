@@ -179,7 +179,7 @@
 
                 </div>-->
                 <br />
-                <h4>Click Year or Make to change search order: startYears?</h4>
+                <h4>Click [Year] or [Make] to change search order:</h4>
                 <br />
 
                 <div class="row">
@@ -252,7 +252,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><button ng-click="cars.open(gridItem.id)">Details</button></td>
+                            <td><button ng-click="cars.getDetails(gridItem.id)">Details</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -263,9 +263,6 @@
                             {{cm.car.car.model_year}} {{cm.car.car.make_display}} {{cm.car.car.model_name}} {{cm.car.car.model_trim}}
                             <button class="pull-right btn btn-default" ng-click="cm.cancel()">X</button>
                         </h3>
-
-                        <!--'<img src="{{cm.car.image}}" alt="Car Picture" style="width:304px;height:228px;">';-->
-
                     </div>
 
                     <!--/* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */-->
@@ -273,7 +270,7 @@
                     <uib-accordion cm.close-others="oneAtATime">
                         <uib-accordion-group heading="Photo" is-open="cm.status.isFirstOpen" is-disabled="cm.status.isFirstDisabled" panel-class="panel-info">
                             <!--This content is straight in the template.-->
-                            <img src="{{cm.car.image}}" alt="Car Picture" style="width:304px;height:228px;">';
+                            <img src="{{cm.car.image}}" alt="Car Picture Not Found" style="width:304px;height:228px;">
                         </uib-accordion-group>
                         <!--<uib-accordion-group heading="{{cm.group.title}}" ng-repeat="group in groups">
                             {{cm.group.content}}

@@ -143,7 +143,7 @@
                 
             };
 
-            scope.open = function (id) {
+            scope.getDetails = function (id) {
                 console.log("Id in open " + id + ' type ' + typeof id);
                 var modalInstance = $uibModal.open({
                     animation: true,
