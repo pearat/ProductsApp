@@ -104,3 +104,4 @@ C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\obj\R
 C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\obj\Release\ProductsApp.csproj.GenerateResource.Cache
 C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\obj\Release\ProductsApp.dll
 C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\obj\Release\ProductsApp.pdb
+C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\obj\Release\ProductsApp.csprojResolveAssemblyReference.cache

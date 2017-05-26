@@ -488,7 +488,7 @@
         </member>
         <member name="T:ProductsApp.Controllers.CarsController.Selected">
             <summary>
-            Selected is an object with 5 elements used to access the Cars database.
+            Selected is an object with 5 properties used to access the Cars database.
             1: year = model year; 2: make = manufacturer's name, e.g., ford; 
             3: model = model of the car, e.g., escort; 4: trim = body styling, e.g., ST
             5: sort = default (no value given) descending by date, 
@@ -497,7 +497,7 @@
         </member>
         <member name="T:ProductsApp.Controllers.CarsController.CarId">
             <summary>
-            CarId is an object containing the element "id" of type int which refers to the 
+            CarId is an object containing the property "id" of type int which refers to the 
             identification number of the car to be searched for in the cars database.
             </summary>
         </member>
@@ -595,17 +595,6 @@
             </summary>
             <param name="selected">
             </param>
-            <returns>
-            JSON compound ojbect of Car and one or more Image and Recall records
-            </returns>
-        </member>
-        <member name="M:ProductsApp.Controllers.CarsController.getCar(System.Int32)">
-            <summary>
-            CarRecallPics uses the Id from the CarFinders database to return a compound object containing 
-            (1) a car object with vehicle details, (2) a list of recall information from the Natl Highway Traffic 
-            Safety Administration (NHTSA) along with (3) links to images, if available.
-            </summary>
-            <param name="Id of type integeroftypeinteger"></param>
             <returns>
             JSON compound ojbect of Car and one or more Image and Recall records
             </returns>

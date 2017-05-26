@@ -4,11 +4,16 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+
 using System.Threading.Tasks;
+using System.Web;
+
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace ProductsApp.Controllers
 {
@@ -246,7 +251,7 @@ namespace ProductsApp.Controllers
             var j = id.id;
             var Car = db.Cars.Find(id.id);
             dynamic Recalls = null; 
-            var Image = "";
+            var imgString = "";
            
 
             using (var client = new HttpClient())
@@ -264,47 +269,57 @@ namespace ProductsApp.Controllers
                 {
                     Console.WriteLine("NHTSA GetAsync error: {0}", e);
                     Recalls = null;
-                    // return InternalServerError(e);
                 }
             }
-            // Recalls = JsonConvert.DeserializeObject(content);
-
 
             var image = new BingSearchContainer(new Uri("https://api.datamarket.azure.com/Bing/search/v1/image"));
 
-            //           image.Credentials = new NetworkCredential("accountKey", "uSZdhD53NSOfNv3g0J1hzgObRqsxmFK8iZXUQ3Y2My0");   //"dwmFt1J2rM45AQXkGTk4ebfcVLNcytTxGMHK6dgMreg"
-            image.Credentials = new NetworkCredential("accountKey", "dwmFt1J2rM45AQXkGTk4ebfcVLNcytTxGMHK6dgMreg");
-
+            const int IMG_COUNT = 6;
+            const String IMG_COUNT_STRING = "&count=6";
 
             try
             {
-                var marketData = image.Composite("image", Car.model_year + " " + Car.make + " " + Car.model_name + " " + Car.model_trim,
-                null, null, null, null, null, null, null, null, null, null, null, null, null).Execute();
-                //Image = marketData.First().Image.First().MediaUrl;
+                var client = new HttpClient();
+                var queryString = HttpUtility.ParseQueryString(string.Empty);
+                // Request headers
+                // ca92ee05fb9448c1b7a7d56d833e6b5b
+                //  b1924bbf17dc4760a72d8815bada3400   
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "b1924bbf17dc4760a72d8815bada3400");
 
-                //var Images = marketData?.FirstOrDefault()?.Image;
-                if (marketData != null)
+                // Request parameters
+                queryString["q"] = Car.model_year + " " + Car.make + " " + Car.model_name + " " + Car.model_trim;
+                var uri = "https://api.cognitive.microsoft.com/bing/v5.0/images/search?" + queryString + IMG_COUNT_STRING;
+
+                HttpResponseMessage responseImg;
+
+                // Request body
+                byte[] byteData = Encoding.UTF8.GetBytes("{body}");
+
+                using (var contentImg = new ByteArrayContent(byteData))
                 {
-                    var Images = marketData?.FirstOrDefault()?.Image;
-                    //var mk = marketData?.First();
-                    //var Images = mk.Image;
-                    //int imgCnt = Images.Count();
-                    foreach (var Img in Images)
+                    contentImg.Headers.ContentType = new MediaTypeHeaderValue("application/json"); 
+                    responseImg = await client.PostAsync(uri, contentImg);
+
+                    if (responseImg.IsSuccessStatusCode)
                     {
-                        if (UrlCtrl.IsUrl(Img.MediaUrl))
+                        String str = await responseImg.Content.ReadAsStringAsync();
+
+                        dynamic js = JsonConvert.DeserializeObject(str);
+
+                        for (int i = 0; i < IMG_COUNT; i++)
                         {
-                            Image = Img.MediaUrl;
-                            break;
-                        }
-                        else
-                        {
-                            continue;
+                            string x = js.value[i].contentUrl;
+                            imgString = x.Substring(x.IndexOf("http"));
+                            if (UrlCtrl.IsUrl(imgString))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                imgString = "";
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Image = "";
                 }
             }
             catch (WebException ex)
@@ -315,94 +330,25 @@ namespace ProductsApp.Controllers
                     var resp = (HttpWebResponse)ex.Response;
                     if (resp.StatusCode == HttpStatusCode.NotFound)
                     {
-                        Image = null;
-                        Console.WriteLine("Inside GetDetails, cannot find images: " + resp);
+                        imgString = null;
+                        Debug.WriteLine("Inside GetDetails, cannot find images: " + resp);
                     }
                     else
                     {
-                        Image = null;
-                        Console.WriteLine("Inside GetDetails, error: " + resp);
+                        imgString = null;
+                        Debug.WriteLine("Inside GetDetails, error: " + resp);
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Inside GetDetails, other error response: " + ex.Response);
-                    Image = null;
+                    Debug.WriteLine("Inside GetDetails, other error response: " + ex.Response);
+                    imgString = null;
                 }
             }
-
-            return Ok(new { car = Car, recalls = Recalls, image = Image });
-
-        }
-
-
-        /// <summary>
-        /// CarRecallPics uses the Id from the CarFinders database to return a compound object containing 
-        /// (1) a car object with vehicle details, (2) a list of recall information from the Natl Highway Traffic 
-        /// Safety Administration (NHTSA) along with (3) links to images, if available.
-        /// </summary>
-        /// <param name="Id of type integer"></param>
-        /// <returns>
-        /// JSON compound ojbect of Car and one or more Image and Recall records
-        /// </returns>
-        [Route("CarRecallPics")]
-        public async Task<IHttpActionResult> getCar(int Id)
-        {
-            HttpResponseMessage response = new HttpResponseMessage();
-            string content = "";
-            var Car = db.Cars.Find(Id);
-            var Recalls = "";
-            var Image = "";
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://www.nhtsa.gov/");
-                try
-                {
-                    response = await client.GetAsync("webapi/api/recalls/vehicle/modelyear/" + Car.model_year +
-                                                                                     "/make/" + Car.make +
-                                                                                     "/model/" + Car.model_name + "?format=json");
-                    content = await response.Content.ReadAsStringAsync();
-                }
-                catch (Exception e)
-                {
-                    return InternalServerError(e);
-                }
-            }
-            Recalls = content;
-
-            var image = new BingSearchContainer(new Uri("https://api.datamarket.azure.com/Bing/search/"));
-
-            image.Credentials = new NetworkCredential("accountKey", "uSZdhD53NSOfNv3g0J1hzgObRqsxmFK8iZXUQ3Y2My0");   //"dwmFt1J2rM45AQXkGTk4ebfcVLNcytTxGMHK6dgMreg"
-            try
-            {
-                var marketData = image.Composite(
-                    "image",
-                    Car.model_year + " " + Car.make + " " + Car.model_name + " " + Car.model_trim,
-                    null, null, null, null, null, null, null, null, null, null, null, null, null
-                    ).Execute();
-
-                //Image = marketData.First().Image.First().MediaUrl;
-                var Images = marketData.FirstOrDefault()?.Image;
-                foreach (var Img in Images)
-                {
-                    if (UrlCtrl.IsUrl(Img.MediaUrl))
-                    {
-                        Image = Img.MediaUrl;
-                        break;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                return InternalServerError(e);
-            }
-            return Ok(new { car = Car, recalls = Recalls, image = Image });
+            return Ok(new { car = Car, recalls = Recalls, image = imgString });
         }
     }
+    
 
     /// <summary>
     /// UrlCtrl tests whether the given path leads to a valid and active URL
@@ -427,7 +373,7 @@ namespace ProductsApp.Controllers
             }
             catch (WebException ex)
             {
-                /* thrown in the status of the response is not '200 OK' */
+                Debug.WriteLine($"error {ex}");
                 result = false;
             }
             finally

@@ -54,8 +54,7 @@
     }
 
     service.getCars = function (selected) {
-        // $rootScope.progressing = true;
-        // startSpin();
+
         console.log('-- Inside getCars() -- ');
         if (selected.year == '' && selected.make == '') {
             alert('Trying to get All Cars from database without specifying either year or make');
@@ -63,8 +62,6 @@
         }
         return $http.post('/api/Cars/GetCars', selected).then(
             function (response) {
-                // $rootScope.progressing = false;
-                //stopSpin();
                 return response.data;
             },
             function () {
@@ -76,7 +73,7 @@
     }
 
     service.getDetails = function (id) {
-        // scope.progressing = true;
+
         console.log('Inside service.getDetails before $http.post GetDetails, id: ' + id);
         return $http.post('/api/Cars/GetDetails', { id: id })
         .then(
@@ -87,15 +84,11 @@
                     response.data.recalls.Results = "";
                 }
                 else
-                    response.data.recalls = $.parseJSON(response.data.recalls);
-                // scope.progressing = false;
-              
+                    response.data.recalls = $.parseJSON(response.data.recalls);           
                 return response.data;
             },
             function (err) {
-                //error
                 console.log('ERROR service.getDetails: ' + err);
-                // scope.progressing = false;
             }
         );
     }

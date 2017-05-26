@@ -240,7 +240,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BingSearchContainer.cs" />
-    <Compile Include="Controllers\CarsController.cs" />
+    <Compile Include="Controllers\CarsControllerNew.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -762,7 +762,7 @@
     <Content Include="angu\html\img\4.jpg" />
     <Content Include="angu\html\img\arrow-bg-1.png" />
     <Content Include="angu\html\img\arrow-bg-2.png" />
-    <Content Include="carFindAboutOld.html" />
+    <Content Include="carFindDB - Copy.html" />
     <Content Include="img\Chevrolet-Cruze-Wagon-2012.jpg" />
     <Content Include="img\logos\Angula-Logo.jpg" />
     <Content Include="img\logos\angularjs-logo.png" />
@@ -816,7 +816,7 @@
     <Content Include="img\ford_mustang__1920x1080.jpg" />
     <Content Include="img\Toyota-Land-Cruiser-1990.jpg" />
     <Content Include="carFindDB.html" />
-    <Content Include="OldIndex.html" />
+    <Content Include="indexOld.html" />
     <Content Include="angu\html\js\app.js" />
     <Content Include="angu\html\js\bootstrap.min.js" />
     <Content Include="angu\html\js\gallery\jquery.easing.1.3.js" />
@@ -1784,8 +1784,6 @@
     <Content Include="partials\route1.list.html" />
     <Content Include="partials\route2.list.html" />
     <Content Include="Scripts\angular-spinner.min.js.map" />
-    <Content Include="angu\angu_new\assets\Thumbs.db" />
-    <Content Include="angu\angu_new\css\fancybox\Thumbs.db" />
     <Content Include="angu\angu_new\css\fonts\.DS_Store" />
     <Content Include="angu\angu_new\css\fonts\codropsicons\codropsicons.eot" />
     <Content Include="angu\angu_new\css\fonts\codropsicons\codropsicons.ttf" />
@@ -1796,24 +1794,6 @@
     <Content Include="angu\angu_new\css\minislide\fonts\flexslider-icon.eot" />
     <Content Include="angu\angu_new\css\minislide\fonts\flexslider-icon.ttf" />
     <Content Include="angu\angu_new\css\minislide\fonts\flexslider-icon.woff" />
-    <Content Include="angu\angu_new\images\clients\Thumbs.db" />
-    <Content Include="angu\angu_new\images\footer\Thumbs.db" />
-    <Content Include="angu\angu_new\images\icon\Thumbs.db" />
-    <Content Include="angu\angu_new\images\parallax\Thumbs.db" />
-    <Content Include="angu\angu_new\images\product\Thumbs.db" />
-    <Content Include="angu\angu_new\images\services\Thumbs.db" />
-    <Content Include="angu\angu_new\images\slider\boat\Thumbs.db" />
-    <Content Include="angu\angu_new\images\slider\mini-slider\Thumbs.db" />
-    <Content Include="angu\angu_new\images\slider\Thumbs.db" />
-    <Content Include="angu\angu_new\images\store\product\dresses\Thumbs.db" />
-    <Content Include="angu\angu_new\images\store\product\Thumbs.db" />
-    <Content Include="angu\angu_new\images\store\Thumbs.db" />
-    <Content Include="angu\angu_new\images\team\Thumbs.db" />
-    <Content Include="angu\angu_new\images\testimonial\Thumbs.db" />
-    <Content Include="angu\angu_new\images\texture\Thumbs.db" />
-    <Content Include="angu\angu_new\images\Thumbs.db" />
-    <Content Include="angu\angu_new\img\Thumbs.db" />
-    <Content Include="angu\angu_new\Thumbs.db" />
     <Content Include="angu\Documentation\assets\images\Thumbs.db" />
     <Content Include="angu\html\assets\Thumbs.db" />
     <Content Include="angu\html\css\fancybox\Thumbs.db" />
@@ -1827,24 +1807,7 @@
     <Content Include="angu\html\css\minislide\fonts\flexslider-icon.eot" />
     <Content Include="angu\html\css\minislide\fonts\flexslider-icon.ttf" />
     <Content Include="angu\html\css\minislide\fonts\flexslider-icon.woff" />
-    <Content Include="angu\html\images\clients\Thumbs.db" />
-    <Content Include="angu\html\images\footer\Thumbs.db" />
-    <Content Include="angu\html\images\icon\Thumbs.db" />
-    <Content Include="angu\html\images\parallax\Thumbs.db" />
-    <Content Include="angu\html\images\product\Thumbs.db" />
-    <Content Include="angu\html\images\services\Thumbs.db" />
-    <Content Include="angu\html\images\slider\boat\Thumbs.db" />
-    <Content Include="angu\html\images\slider\mini-slider\Thumbs.db" />
-    <Content Include="angu\html\images\slider\Thumbs.db" />
-    <Content Include="angu\html\images\store\product\dresses\Thumbs.db" />
-    <Content Include="angu\html\images\store\product\Thumbs.db" />
-    <Content Include="angu\html\images\store\Thumbs.db" />
-    <Content Include="angu\html\images\team\Thumbs.db" />
-    <Content Include="angu\html\images\testimonial\Thumbs.db" />
-    <Content Include="angu\html\images\texture\Thumbs.db" />
-    <Content Include="angu\html\images\Thumbs.db" />
     <Content Include="angu\html\img\.DS_Store" />
-    <Content Include="angu\html\img\Thumbs.db" />
     <Content Include="css\fancybox\Thumbs.db" />
     <Content Include="css\fonts\.DS_Store" />
     <Content Include="css\fonts\codropsicons\codropsicons.eot" />
@@ -1856,7 +1819,9 @@
     <Content Include="css\minislide\fonts\flexslider-icon.eot" />
     <Content Include="css\minislide\fonts\flexslider-icon.ttf" />
     <Content Include="css\minislide\fonts\flexslider-icon.woff" />
-    <None Include="Properties\PublishProfiles\CarFinderTGP - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\CarFinderTGP - FTP.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\CarFinderTGP - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
@@ -1900,6 +1865,13 @@
     <Content Include="Scripts\version.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="angu\angu_new\images\product\" />
+    <Folder Include="angu\angu_new\images\services\" />
+    <Folder Include="angu\angu_new\images\slider\boat\" />
+    <Folder Include="angu\angu_new\images\testimonial\" />
+    <Folder Include="angu\html\images\services\" />
+    <Folder Include="angu\html\images\slider\boat\" />
+    <Folder Include="angu\html\images\testimonial\" />
     <Folder Include="NewFolder1\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>

@@ -101,7 +101,6 @@ C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\bin\M
 C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\bin\System.Web.Http.Owin.xml
-C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\obj\Debug\ProductsApp.csprojResolveAssemblyReference.cache
 C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\obj\Debug\ProductsApp.Migrations.initialCreate.resources
 C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\obj\Debug\ProductsApp.csproj.GenerateResource.Cache
 C:\Users\Tim\Documents\Visual Studio 2015\Projects\ProductsApp\ProductsApp\obj\Debug\ProductsApp.dll
